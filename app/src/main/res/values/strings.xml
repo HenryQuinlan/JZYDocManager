@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">JZYDocManager</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="navigation_title_homepage">首页</string>
+    <string name="navigation_title_classification">分类</string>
+    <string name="navigation_title_local_download">本地</string>
+    <string name="navigation_title_user_center">我的</string>
+</resources>

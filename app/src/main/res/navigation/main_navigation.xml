@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/homepage_fragment">
+
+    <fragment
+        android:id="@+id/homepage_fragment"
+        android:name="team.JZY.DocManager.ui.homepage.HomepageFragment"
+        android:label=""
+        tools:layout="@layout/homepage_fragment" />
+    <fragment
+        android:id="@+id/classification_fragment"
+        android:name="team.JZY.DocManager.ui.classification.ClassificationFragment"
+        android:label=""
+        tools:layout="@layout/classification_fragment" />
+    <fragment
+        android:id="@+id/local_download_fragment"
+        android:name="team.JZY.DocManager.ui.local_download.LocalDownloadFragment"
+        android:label=""
+        tools:layout="@layout/local_download_fragment" />
+    <fragment
+        android:id="@+id/user_center_fragment"
+        android:name="team.JZY.DocManager.ui.user_center.UserCenterFragment"
+        android:label=""
+        tools:layout="@layout/user_center_fragment" />
+</navigation>
