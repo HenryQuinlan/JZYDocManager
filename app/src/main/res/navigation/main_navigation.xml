@@ -25,4 +25,5 @@
         android:name="team.JZY.DocManager.ui.user_center.UserCenterFragment"
         android:label=""
         tools:layout="@layout/user_center_fragment" />
+
 </navigation>

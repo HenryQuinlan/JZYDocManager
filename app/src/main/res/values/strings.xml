@@ -6,4 +6,6 @@
     <string name="navigation_title_classification">分类</string>
     <string name="navigation_title_local_download">本地</string>
     <string name="navigation_title_user_center">我的</string>
+    <string name="button_login">登 录</string>
+    <string name="jzy_docManager_shared_preference_key">JZYDocManagerSharedPreferenceKey</string>
 </resources>

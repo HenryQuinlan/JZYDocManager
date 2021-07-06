@@ -2,13 +2,20 @@ package team.JZY.DocManager.ui.local_download;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.jetbrains.annotations.NotNull;
+
 import team.JZY.DocManager.R;
+import team.JZY.DocManager.model.User;
+import team.JZY.DocManager.ui.UserViewModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,7 +24,7 @@ import team.JZY.DocManager.R;
  */
 public class LocalDownloadFragment extends Fragment {
 
-
+    private UserViewModel userViewModel;
     public LocalDownloadFragment() {
         // Required empty public constructor
     }
@@ -32,5 +39,11 @@ public class LocalDownloadFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.local_download_fragment, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
     }
 }
