@@ -22,6 +22,11 @@
             android:name=".MainActivity"
             android:hardwareAccelerated="true">
         </activity>
+        <activity android:name=".ui.user_center.settings"></activity>
+        <activity android:name=".ui.user_center.mUpload" />
+        <activity android:name=".ui.user_center.mCollection" />
+        <activity android:name=".ui.user_center.mRecord" />
+        <activity android:name=".ui.user_center.mDownload" />
     </application>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
