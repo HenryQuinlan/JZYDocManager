@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/doc_info_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/doc_info_name_text"
+        android:layout_width="166dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="36dp"
+        android:singleLine="true"
+        android:text="最好用的眼霜排行 最好用的眼霜排行榜"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/doc_info_type_view"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/doc_info_type_view"
+        android:layout_width="33dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="36dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_doctype_doc" />
+
+    <TextView
+        android:id="@+id/doc_info_visits_and_size_text"
+        android:layout_width="187dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="4dp"
+        android:text="浏览量：980898  大小：39.2KB"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/doc_info_type_view"
+        app:layout_constraintTop_toBottomOf="@+id/doc_info_name_text" />
+
+    <ImageButton
+        android:id="@+id/doc_info_favorie_button"
+        android:layout_width="23dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:background="@color/transparent"
+        android:src="@drawable/ic_toolbar_favorite_normal"
+        app:layout_constraintEnd_toStartOf="@+id/doc_info_download_button"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/doc_info_download_button"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginRight="28dp"
+        android:layout_marginBottom="40dp"
+        android:background="@color/transparent"
+        android:src="@drawable/ic_toolbar_download"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

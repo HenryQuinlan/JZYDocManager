@@ -16,7 +16,7 @@ public class UserViewModel extends ViewModel {
        }
        return liveUser;
     }
-    public void setLiveUser(User user) {
+    public void setUser(User user) {
         if(liveUser == null) {
             liveUser = new MutableLiveData<User>(user);
         }

@@ -17,6 +17,7 @@ public class LoginViewModel extends ViewModel {
         }
         return loggedInUserName;
     }
+
     public void setLoggedInUserName(String name) {
         if(loggedInUserName == null) {
             loggedInUserName = new MutableLiveData<String>(name);
@@ -25,6 +26,7 @@ public class LoginViewModel extends ViewModel {
             loggedInUserName.setValue(name);
         }
     }
+
     public boolean login(String name,String password) {
         if(name.equals("1") &&password.equals("1")) {
             loggedInUserName.setValue(name);
