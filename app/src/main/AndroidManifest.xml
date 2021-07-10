@@ -9,6 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.JZYDocManager">
+        <activity android:name=".ui.user_center.settings"></activity>
+        <activity android:name=".ui.user_center.mUpload" />
+        <activity android:name=".ui.user_center.mCollection" />
+        <activity android:name=".ui.user_center.mRecord" />
+        <activity android:name=".ui.user_center.mDownload" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -16,9 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
-
-        </activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>
