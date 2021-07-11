@@ -42,22 +42,26 @@ import com.kathline.library.content.ZFileConfiguration;
 import com.kathline.library.content.ZFileContent;
 import com.kathline.library.listener.ZFileListener;
 import com.kathline.library.util.ZFileHelp;
+import com.kathline.library.util.ZFileOpenUtil;
+import com.kathline.library.util.ZFileUtil;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
-import team.JZY.DocManager.data.DocInfoViewModol;
+import team.JZY.DocManager.data.DocInfoRepository;
 import team.JZY.DocManager.databinding.ActivityMainBinding;
 import team.JZY.DocManager.databinding.UploadPopupwindowBinding;
 import team.JZY.DocManager.model.DocInfo;
 import team.JZY.DocManager.model.User;
 import team.JZY.DocManager.ui.UserViewModel;
 import team.JZY.DocManager.data.CosLoader;
+import team.JZY.DocManager.util.Converter;
+import team.JZY.DocManager.util.TextClassification;
 
 public class MainActivity extends AppCompatActivity {
-    DocInfoViewModol docInfoViewModol;
 
 
     private static final String LOGGED_IN_USER_NAME_KEY = "loggedInUserNameKey";
@@ -76,20 +80,15 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        //docInfoViewModol= new ViewModelProvider(this).get(DocInfoViewModol.class);
-
-
         getSupportActionBar().hide();
 
         Intent intent = getIntent();
         String userName = intent.getStringExtra(LOGGED_IN_USER_NAME_KEY);
         User user = new User(userName);
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        userViewModel.setLiveUser(user);
-
+        userViewModel.setUser(user);
 
         initNavigation();
-    
     }
     private void initNavigation(){
 
@@ -110,36 +109,10 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onMenuItemUploadClicked()
     {
+        Log.d("salkdjasljd",new File(getCacheDir(),"sjsj").toString());
         createPopupWindow();
         return false;
     }
-//    private void uploadAction(){
-//        Log.d( "MainActivity","here: ");
-//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);  //  意图：文件浏览器
-//        intent.setType("*/*");//无类型限制
-//        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);  //  关键！多选参数为true
-//        intent.addCategory(Intent.CATEGORY_OPENABLE);
-//        startActivityForResult(intent, FILE_REQUEST_CODE);
-//    }
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        Log.d("MainActivity", "owhat: ");
-//        super.onActivityResult(requestCode, resultCode, data);
-//        Log.d("MainActivity", "onActivityResult: ");
-//        if (data.getData() != null) {
-//            Uri uri = data.getData();
-//            String[] arr = {MediaStore.Images.Media.DATA};
-//            Cursor cursor = managedQuery(uri, arr, null, null, null);
-//            int img_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-//            cursor.moveToFirst();
-//            String img_path = cursor.getString(img_index);
-//            file = new File(img_path);
-//            long size=file.length();
-//            String defaultName="";
-//            int theClassification;
-//            //
-//            if(defaultName==""){
-//
-//            }
 
     private void createPopupWindow(){
         UploadPopupwindowBinding popupBinding = UploadPopupwindowBinding.inflate(LayoutInflater.from(this),null,false);
@@ -163,13 +136,6 @@ public class MainActivity extends AppCompatActivity {
         popupBinding.buttonUpload.setOnClickListener(v->filePick());
         popupBinding.textView.setOnClickListener(v->filePick());
 
-
-            DocInfo docInfo =new DocInfo(defaultName,1,0,2,10);
-            Long[] id=docInfoViewModol.insertDocInfo(docInfo);
-            Long theId=id[0];
-            CosLoader cosLoader=new CosLoader(this);
-            cosLoader.upload(this,uri,theId);
-        }
     }
     public static void start(Context context,String loggedInUserName) {
         Intent intent = new Intent(context,MainActivity.class);
@@ -202,10 +168,30 @@ public class MainActivity extends AppCompatActivity {
             if (fileList == null || fileList.size() <= 0) {
                 return;
             }
-            Snackbar.make(binding.getRoot(),Uri.parse(fileList.get(0).getFilePath()).getPath(),Snackbar.LENGTH_SHORT).show();
+            uploadAction(fileList);
         });
     }
-
+    private void uploadAction(List<ZFileBean> fileList) {
+        new Thread(()-> {
+                List<DocInfo>docsInfo = new ArrayList<DocInfo>();
+                int i=0;
+                for(ZFileBean file:fileList) {
+//                    try {
+//                        docsInfo.add(Converter.getInfo(file));
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+                    //Log.d("HHHHHHH", Uri.fromFile(new File(file.getFilePath())).toString());
+                    CosLoader cosLoader = new CosLoader(this);
+                    cosLoader.upload(this,Uri.fromFile(new File(file.getFilePath())),i++);
+                }
+//                DocInfoRepository.getInstance(getApplication())
+//                        .setInsertListener(docsId ->{
+//                            for(long a:docsId) {
+//                                Log.d("PPPP",a+"");}
+//                        }).insert(docsInfo);
+        }).start();
+    }
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);

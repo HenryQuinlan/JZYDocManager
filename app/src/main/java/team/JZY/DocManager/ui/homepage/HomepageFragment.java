@@ -67,13 +67,15 @@ public class HomepageFragment extends Fragment {
 //        // TODO: Use the ViewModel
 //    }
 //
-public void initTempData(){
-    List<DocInfo>d = new ArrayList<>();
-    for(int i = 3333; i < 3433 ; i++){
-        DocInfo docInfo= new DocInfo("最好的眼霜排行最好最好"+i,i,i,i%3);
-        d.add(docInfo);
-    }
-    homepageViewModel.setDocsInfo(d);
+    public void initTempData(){
+        new Thread(()->{
+            List<DocInfo>d = new ArrayList<>();
+            for(int i = 3333; i < 3433 ; i++){
+                DocInfo docInfo= new DocInfo("最好的眼霜排行最好最好"+i,i%3,i,i,i+"KB");
+                d.add(docInfo);
+            }
+            requireActivity().runOnUiThread(()->homepageViewModel.setDocsInfo(d));
+        }).start();
 
-}
+    }
 }

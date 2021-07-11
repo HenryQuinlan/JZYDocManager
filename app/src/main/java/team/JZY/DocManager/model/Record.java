@@ -2,10 +2,12 @@ package team.JZY.DocManager.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
 public class Record {
+    @Ignore
     private DocInfo docInfo;
     @PrimaryKey(autoGenerate = true)
     private int id;
@@ -15,16 +17,27 @@ public class Record {
     private int operationType;
 
     @ColumnInfo(name="DocID")
-    private long DocID=docInfo.getId();
+    private long DocID;
     @ColumnInfo(name="DocName")
-    private String DocName=docInfo.getName();
+    private String DocName;
     @ColumnInfo(name="DocType")
-    private int DocType=docInfo.getType();
+    private int DocType;
 
-    public Record(String userName,DocInfo docInfo,int operationType){
+    public Record(String userName, int operationType, long docID, String docName, int docType) {
+        this.userName = userName;
+        this.operationType = operationType;
+        DocID = docID;
+        DocName = docName;
+        DocType = docType;
+    }
+
+    public Record(String userName, DocInfo docInfo, int operationType){
         this.userName=userName;
         this.docInfo=docInfo;
         this.operationType=operationType;
+        this.DocID=docInfo.getId();
+        this.DocName=docInfo.getName();
+        this.DocType=docInfo.getType();
     }
 
     public DocInfo getDocInfo() {

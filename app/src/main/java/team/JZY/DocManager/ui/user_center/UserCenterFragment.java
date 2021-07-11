@@ -40,8 +40,8 @@ public class UserCenterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Intent intentCollection =new Intent(UserCenterFragment,mCollection);
-        Intent intent
+        //Intent intentCollection =new Intent(UserCenterFragment,mCollection);
+        //Intent intent
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.user_center_fragment, container, false);
     }

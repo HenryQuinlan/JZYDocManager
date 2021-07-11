@@ -14,6 +14,7 @@ public abstract class DocManagerDataBase extends RoomDatabase {
     static DocManagerDataBase getInstance(Context context){//必须通过这个函数获得数据库实例
         if(INSTANCE==null){
             INSTANCE= Room.databaseBuilder(context.getApplicationContext(),DocManagerDataBase.class,"Doc_Database")
+                    .enableMultiInstanceInvalidation()
                     .build();
         }
         return INSTANCE;

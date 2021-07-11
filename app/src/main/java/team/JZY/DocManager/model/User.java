@@ -27,13 +27,5 @@ public class User {
     public void setPassword(String password){
         this.password =password;
     }
-    @ColumnInfo(name = "path")
-    private String path;
-    public void setPath(String path) {
-        this.path = path;
-    }
-    public String getPath() {
-        return path;
-    }
 }
 

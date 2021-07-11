@@ -2,9 +2,15 @@ package team.JZY.DocManager.data;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import com.tencent.cos.xml.CosXmlService;
 import com.tencent.cos.xml.CosXmlServiceConfig;
+import com.tencent.cos.xml.exception.CosXmlClientException;
+import com.tencent.cos.xml.exception.CosXmlServiceException;
+import com.tencent.cos.xml.listener.CosXmlResultListener;
+import com.tencent.cos.xml.model.CosXmlRequest;
+import com.tencent.cos.xml.model.CosXmlResult;
 import com.tencent.cos.xml.transfer.COSXMLUploadTask;
 import com.tencent.cos.xml.transfer.TransferConfig;
 import com.tencent.cos.xml.transfer.TransferManager;
@@ -40,7 +46,7 @@ public class CosLoader implements DocStorage {
         InitQCloudCredentialProvider(context);
     }
     @Override
-    public void upload(Context context, Uri uri,Long uploadFileId) {
+    public void upload(Context context, Uri srcUri,long docId) {
         // 初始化 TransferConfig，这里使用默认配置，如果需要定制，请参考 SDK 接口文档
         TransferConfig transferConfig = new TransferConfig.Builder().build();
 // 初始化 TransferManager
@@ -49,9 +55,26 @@ public class CosLoader implements DocStorage {
         String bucket = "myandroid-1306390087"; //存储桶，格式：BucketName-APPID
 //        String srcPath = new File(context.getCacheDir(), uploadFileId)
 //                .toString(); //本地文件的绝对路径
-        String cosPath = uploadFileId.toString(); //对象在存储桶中的位置标识符，即称对象键
+        String cosPath = String.valueOf(docId); //对象在存储桶中的位置标识符，即称对象键
         String uploadId = null;
-        COSXMLUploadTask cosxmlUploadTask=transferManager.upload(bucket,cosPath,uri,uploadId);
+        COSXMLUploadTask cosxmlUploadTask=transferManager.upload(bucket,cosPath,srcUri,uploadId);
+        cosxmlUploadTask.setCosXmlResultListener(new CosXmlResultListener() {
+            @Override
+            public void onSuccess(CosXmlRequest cosXmlRequest, CosXmlResult cosXmlResult) {
+                Log.d("HAHAHAHA", "onSuccess: ");
+            }
+
+            @Override
+            public void onFail(CosXmlRequest request,
+                               CosXmlClientException clientException,
+                               CosXmlServiceException serviceException) {
+                if (clientException != null) {
+                    clientException.printStackTrace();
+                } else {
+                    serviceException.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override
