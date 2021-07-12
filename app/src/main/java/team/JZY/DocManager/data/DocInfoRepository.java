@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class DocInfoRepository implements DocInfoProvider {
     private DocInfoRepository(){
 
     }
-    public static DocInfoRepository getInstance(Application context) {
+    public static DocInfoRepository getInstance(Context context) {
         if(INSTANCE == null) {
             INSTANCE =new DocInfoRepository();
             DocManagerDataBase docManagerDataBase = DocManagerDataBase.getInstance(context);
@@ -43,7 +44,7 @@ public class DocInfoRepository implements DocInfoProvider {
         new Thread(()->{
             long size = docInfoDao.getSize();
             List<DocInfo> result = docInfoDao.request(amount<size?amount:size);
-            mRequestListener.getResponse(result);
+            if(mRequestListener != null)mRequestListener.getResponse(result);
             mRequestListener = null;
         }).start();
         return null;
@@ -54,7 +55,7 @@ public class DocInfoRepository implements DocInfoProvider {
         new Thread(()->{
             long size = docInfoDao.getSize();
             List<DocInfo> result = docInfoDao.request(amount<size?amount:size,classification);
-            mRequestListener.getResponse(result);
+            if(mRequestListener != null)mRequestListener.getResponse(result);
             mRequestListener = null;
         }).start();
         return null;
@@ -62,6 +63,7 @@ public class DocInfoRepository implements DocInfoProvider {
 
     @Override
     public List<DocInfo> request(String searchKeyWord) {
+        if(mRequestListener != null);
         return null;
     }
 
@@ -69,7 +71,7 @@ public class DocInfoRepository implements DocInfoProvider {
     public List<Long> insert(List<DocInfo> docsInfo) {
         new Thread(()->{
             List<Long> docsId = docInfoDao.insert(docsInfo);
-            mInsertListener.getResponse(docsId);
+            if(mInsertListener != null)mInsertListener.getResponse(docsId);
             mInsertListener = null;
         }).start();
         return null;

@@ -6,7 +6,7 @@ import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 
 public class LoginViewModel extends ViewModel {
-    // TODO: Implement the ViewModel
+
     public static final String SAVE_LOGGED_IN_STATE_KEY = "SavedLoggedInStateKey";
     private MutableLiveData<String> loggedInUserName;
 
@@ -28,6 +28,7 @@ public class LoginViewModel extends ViewModel {
     }
 
     public boolean login(String name,String password) {
+        //TODO:  LOGIN
         if(name.equals("1") &&password.equals("1")) {
             loggedInUserName.setValue(name);
             return true;

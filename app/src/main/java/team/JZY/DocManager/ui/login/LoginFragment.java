@@ -51,7 +51,6 @@ public class LoginFragment extends Fragment {
 
         loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
 
-
         loginViewModel.getLoggedInUserName().observe(getViewLifecycleOwner(), (Observer<String>)loggedInUserName->{
             if(loggedInUserName != null) {
                 SharedPreferences sharedPref = requireContext().getSharedPreferences(getString(R.string.jzy_docManager_shared_preference_key), Context.MODE_PRIVATE);
@@ -59,19 +58,14 @@ public class LoginFragment extends Fragment {
                 editor.putString(LoginViewModel.SAVE_LOGGED_IN_STATE_KEY, loggedInUserName);
                 editor.apply();
                 MainActivity.start(getContext(),loggedInUserName);
-                getActivity().finish();
+                requireActivity().finish();
             }
         });
-
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
         SharedPreferences sharedPref = requireContext().getSharedPreferences(getString(R.string.jzy_docManager_shared_preference_key), Context.MODE_PRIVATE);
         String name = sharedPref.getString(LoginViewModel.SAVE_LOGGED_IN_STATE_KEY,null);
         loginViewModel.setLoggedInUserName(name);
     }
+
 
     public void onButtonLoginClicked() {
         String name = binding.textName.getText().toString();

@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">JZYDocManager</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="navigation_title_homepage">首页</string>
     <string name="navigation_title_classification">分类</string>
     <string name="navigation_title_local_download">本地</string>
@@ -14,5 +13,7 @@
     <string name="title_upload_file">上传文件</string>
     <string name="button_ok">确定</string>
     <string name="button_cancel">取消</string>
+    <string name="message_upload_complete">上传完成</string>
+    <string name="message_download_complete">下载完成</string>
 
 </resources>

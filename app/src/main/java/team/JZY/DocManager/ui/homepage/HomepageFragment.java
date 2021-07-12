@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import team.JZY.DocManager.R;
+import team.JZY.DocManager.data.DocInfoRepository;
 import team.JZY.DocManager.databinding.HomepageFragmentBinding;
 import team.JZY.DocManager.model.DocInfo;
 import team.JZY.DocManager.model.User;
@@ -34,6 +35,7 @@ public class HomepageFragment extends Fragment {
     private UserViewModel userViewModel;
     private HomepageFragmentBinding binding;
     private RecyclerView recyclerView;
+    private DocInfoRepository docInfoRepository;
     public static HomepageFragment newInstance() {
         return new HomepageFragment();
     }
@@ -53,29 +55,20 @@ public class HomepageFragment extends Fragment {
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         homepageViewModel = new ViewModelProvider(this).get(HomepageViewModel.class);
         homepageViewModel.getLiveInfo().observe(getViewLifecycleOwner(),(Observer<List<DocInfo>>)docsInfo->{
-            DocInfoViewAdapter adapter = new DocInfoViewAdapter(docsInfo);
+            if(docsInfo == null)return;
+            DocInfoViewAdapter adapter = new DocInfoViewAdapter(requireActivity(),docsInfo);
             recyclerView.setAdapter(adapter);
         });
-        initTempData();
+
+        docInfoRepository  = DocInfoRepository.getInstance(requireActivity());
+        getData();
     }
 
-//    @Override
-//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-//        super.onActivityCreated(savedInstanceState);
-//
-//        //binding.textView.setText(userViewModel.getUser().name);
-//        // TODO: Use the ViewModel
-//    }
-//
-    public void initTempData(){
-        new Thread(()->{
-            List<DocInfo>d = new ArrayList<>();
-            for(int i = 3333; i < 3433 ; i++){
-                DocInfo docInfo= new DocInfo("最好的眼霜排行最好最好"+i,i%3,i,i,i+"KB");
-                d.add(docInfo);
-            }
-            requireActivity().runOnUiThread(()->homepageViewModel.setDocsInfo(d));
-        }).start();
-
+    public void getData(){
+        docInfoRepository.setRequestListener(docsInfo -> {
+            requireActivity().runOnUiThread(()->{
+                homepageViewModel.setDocsInfo(docsInfo);
+            });
+        }).request(200);
     }
 }

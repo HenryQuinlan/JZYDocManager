@@ -2,7 +2,6 @@ package team.JZY.DocManager.util;
 
 import android.util.ArrayMap;
 import android.util.Base64;
-import android.util.JsonReader;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -15,10 +14,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
@@ -27,19 +24,19 @@ import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-public class TextClassification {
+public class TextClassificationUtil {
     private static final String CHARSET = "UTF-8";
     private static final String ALGORITHM = "HmacSHA1";
-    private static TextClassification INSTANCE;
+    private static TextClassificationUtil INSTANCE;
 
     private static Map<ClassName,Integer>map;
-    private TextClassification() {
+    private TextClassificationUtil() {
         initMap();
     }
 
-    public static TextClassification getInstance() {
+    public static TextClassificationUtil getInstance() {
         if(INSTANCE == null) {
-            INSTANCE = new TextClassification();
+            INSTANCE = new TextClassificationUtil();
         }
         return INSTANCE;
     }
@@ -124,13 +121,13 @@ public class TextClassification {
                     className = new ClassName(firstClassName,secondClassName);
                     if(map.containsKey(className))
                         return map.get(className);
-                    return 16;
+                    return 17;
             }
         }
         catch (Exception e) {
             e.printStackTrace();
         }
-        return 16;
+        return 17;
     }
     private static class ClassName {
         String firstClassName;
@@ -160,72 +157,73 @@ public class TextClassification {
         map = new ArrayMap<ClassName, Integer>();
         //map = new <ClassName,Integer>();
         map.put(new ClassName("旅游","*"),10);
-        map.put(new ClassName("情感","*"),16);
-        map.put(new ClassName("数码","*"),10);
+        map.put(new ClassName("情感","*"),17);
+        map.put(new ClassName("数码","*"),11);
         map.put(new ClassName("文化","读书"),9);
         map.put(new ClassName("文化","思想"),7);
         map.put(new ClassName("文化","民俗"),7);
         map.put(new ClassName("文化","文学"),9);
-        map.put(new ClassName("文化","艺术"),16);
-        map.put(new ClassName("军事","*"),16);
+        map.put(new ClassName("文化","艺术"),17);
+        map.put(new ClassName("军事","*"),17);
         map.put(new ClassName("摄影","*"),10);
         map.put(new ClassName("美食","*"),10);
-        map.put(new ClassName("星座","*"),16);
-        map.put(new ClassName("二次元","*"),15);
-        map.put(new ClassName("宗教","*"),16);
-        map.put(new ClassName("搞笑","*"),11);
-        map.put(new ClassName("汽车","*"),16);
-        map.put(new ClassName("美容","*"),12);
-        map.put(new ClassName("时尚","*"),12);
+        map.put(new ClassName("星座","*"),17);
+        map.put(new ClassName("二次元","*"),16);
+        map.put(new ClassName("宗教","*"),17);
+        map.put(new ClassName("搞笑","*"),12);
+        map.put(new ClassName("汽车","*"),11);
+        map.put(new ClassName("美容","*"),13);
+        map.put(new ClassName("时尚","*"),13);
         map.put(new ClassName("健康","*"),6);
-        map.put(new ClassName("游戏","*"),11);
-        map.put(new ClassName("宠物","*"),16);
+        map.put(new ClassName("游戏","*"),12);
+        map.put(new ClassName("宠物","*"),10);
         map.put(new ClassName("三农","*"),8);
-        map.put(new ClassName("生活","*"),10);
-        map.put(new ClassName("育儿","*"),16);
+        map.put(new ClassName("生活","*"),11);
+        map.put(new ClassName("育儿","*"),11);
         map.put(new ClassName("科学","*"),5);
         map.put(new ClassName("历史","*"),7);
         map.put(new ClassName("教育","高等教育"),0);
         map.put(new ClassName("教育","外语学习"),0);
         map.put(new ClassName("教育","留学"),0);
         map.put(new ClassName("教育","考试"),0);
-        map.put(new ClassName("教育","演讲"),16);
+        map.put(new ClassName("教育","演讲"),17);
         map.put(new ClassName("教育","中学教育"),1);
         map.put(new ClassName("教育","高考"),1);
         map.put(new ClassName("教育","高中教育"),1);
         map.put(new ClassName("教育","小学教育"),1);
         map.put(new ClassName("教育","学前教育"),1);
-        map.put(new ClassName("教育","教育产业"),16);
-        map.put(new ClassName("天气","*"),16);
-        map.put(new ClassName("房产","*"),16);
+        map.put(new ClassName("教育","教育产业"),17);
+        map.put(new ClassName("天气","*"),11);
+        map.put(new ClassName("房产","*"),11);
         map.put(new ClassName("职场","*"),2);
-        map.put(new ClassName("法律","*"),16);
-        map.put(new ClassName("彩票","*"),16);
+        map.put(new ClassName("法律","*"),17);
+        map.put(new ClassName("彩票","*"),11);
         map.put(new ClassName("财经","*"),3);
-        map.put(new ClassName("非体育分类","*"),16);
+        map.put(new ClassName("非体育分类","*"),17);
         map.put(new ClassName("科技","传统IT行业"),4);
         map.put(new ClassName("科技","创投"),3);
         map.put(new ClassName("科技","互联网+"),4);
         map.put(new ClassName("科技","互联网金融"),3);
-        map.put(new ClassName("科技","机械"),16);
+        map.put(new ClassName("科技","机械"),17);
         map.put(new ClassName("科技","家电产业"),0);
-        map.put(new ClassName("科技","科技大佬"),16);
+        map.put(new ClassName("科技","科技大佬"),17);
         map.put(new ClassName("科技","科技股"),3);
         map.put(new ClassName("科技","科学"),5);
         map.put(new ClassName("科技","企业服务"),4);
-        map.put(new ClassName("科技","内容文化产业"),16);
-        map.put(new ClassName("科技","汽车科技"),16);
+        map.put(new ClassName("科技","内容文化产业"),17);
+        map.put(new ClassName("科技","汽车科技"),11);
         map.put(new ClassName("科技","区块链"),4);
         map.put(new ClassName("科技","人工智能"),4);
         map.put(new ClassName("科技","软件工具"),4);
-        map.put(new ClassName("科技","社交平台"),14);
+        map.put(new ClassName("科技","社交平台"),15);
         map.put(new ClassName("科技","网络安全"),4);
         map.put(new ClassName("科技","智能硬件"),4);
-        map.put(new ClassName("科技","游戏"),11);
-        map.put(new ClassName("社会","*"),14);
-        map.put(new ClassName("时政","*"),14);
-        map.put(new ClassName("体育","*"),13);
-        map.put(new ClassName("娱乐","*"),11);
+        map.put(new ClassName("科技","游戏"),12);
+        map.put(new ClassName("社会","*"),15);
+        map.put(new ClassName("时政","*"),15);
+        map.put(new ClassName("体育","*"),14);
+        map.put(new ClassName("娱乐","*"),12);
+        map.put(new ClassName("人工智能","*"),4);
 
     }
 }

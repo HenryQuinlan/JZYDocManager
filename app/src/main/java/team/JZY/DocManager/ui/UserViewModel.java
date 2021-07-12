@@ -8,7 +8,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import team.JZY.DocManager.model.User;
 
 public class UserViewModel extends ViewModel {
-    // TODO: Implement the ViewModel
+
     private MutableLiveData<User> liveUser;
     public LiveData<User> getLiveUser() {
        if(liveUser == null) {

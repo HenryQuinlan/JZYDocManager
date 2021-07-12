@@ -38,11 +38,4 @@ public class ClassificationFragment extends Fragment {
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(ClassificationViewModel.class);
-        // TODO: Use the ViewModel
-    }
-
 }

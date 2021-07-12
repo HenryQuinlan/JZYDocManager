@@ -4,5 +4,4 @@ import androidx.lifecycle.ViewModel;
 
 public class ClassificationViewModel extends ViewModel {
 
-    // TODO: Implement the ViewModel
 }

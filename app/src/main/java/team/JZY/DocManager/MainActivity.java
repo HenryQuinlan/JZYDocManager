@@ -1,7 +1,5 @@
 package team.JZY.DocManager;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -9,7 +7,6 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,35 +14,21 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
+import android.os.Environment;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.kathline.library.common.ZFileManageHelp;
-import com.kathline.library.content.MimeType;
 import com.kathline.library.content.ZFileBean;
 import com.kathline.library.content.ZFileConfiguration;
 import com.kathline.library.content.ZFileContent;
 import com.kathline.library.listener.ZFileListener;
-import com.kathline.library.util.ZFileHelp;
-import com.kathline.library.util.ZFileOpenUtil;
-import com.kathline.library.util.ZFileUtil;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -58,8 +41,8 @@ import team.JZY.DocManager.model.DocInfo;
 import team.JZY.DocManager.model.User;
 import team.JZY.DocManager.ui.UserViewModel;
 import team.JZY.DocManager.data.CosLoader;
-import team.JZY.DocManager.util.Converter;
-import team.JZY.DocManager.util.TextClassification;
+import team.JZY.DocManager.util.ConvertUtil;
+import team.JZY.DocManager.util.ToastUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -73,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String PDF = "application/pdf";
     private ActivityMainBinding binding;
     private UserViewModel userViewModel;
+    private DocInfoRepository docInfoRepository;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -88,8 +72,11 @@ public class MainActivity extends AppCompatActivity {
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         userViewModel.setUser(user);
 
+        docInfoRepository = DocInfoRepository.getInstance(this);
+
         initNavigation();
     }
+
     private void initNavigation(){
 
         // Passing each menu ID as a set of Ids because each
@@ -109,7 +96,6 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onMenuItemUploadClicked()
     {
-        Log.d("salkdjasljd",new File(getCacheDir(),"sjsj").toString());
         createPopupWindow();
         return false;
     }
@@ -137,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
         popupBinding.textView.setOnClickListener(v->filePick());
 
     }
+
     public static void start(Context context,String loggedInUserName) {
         Intent intent = new Intent(context,MainActivity.class);
         intent.putExtra(LOGGED_IN_USER_NAME_KEY,loggedInUserName);
@@ -144,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void filePick() {
+        //TODO MORE_SUPPORT TYPE
+        if(!checkPermission())return;
         final ZFileConfiguration configuration = new ZFileConfiguration.Build()
                 //.resources(resources)
                 .maxLength(9)
@@ -171,36 +160,74 @@ public class MainActivity extends AppCompatActivity {
             uploadAction(fileList);
         });
     }
+
     private void uploadAction(List<ZFileBean> fileList) {
+
         new Thread(()-> {
                 List<DocInfo>docsInfo = new ArrayList<DocInfo>();
-                int i=0;
+                List<Uri>docsUri = new ArrayList<Uri>();
                 for(ZFileBean file:fileList) {
-//                    try {
-//                        docsInfo.add(Converter.getInfo(file));
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-                    //Log.d("HHHHHHH", Uri.fromFile(new File(file.getFilePath())).toString());
-                    CosLoader cosLoader = new CosLoader(this);
-                    cosLoader.upload(this,Uri.fromFile(new File(file.getFilePath())),i++);
+                    try {
+                        docsInfo.add(ConvertUtil.FileConvertToDocInfo(file));
+                        docsUri.add(Uri.fromFile(new File(file.getFilePath())));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-//                DocInfoRepository.getInstance(getApplication())
-//                        .setInsertListener(docsId ->{
-//                            for(long a:docsId) {
-//                                Log.d("PPPP",a+"");}
-//                        }).insert(docsInfo);
-        }).start();
-    }
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (data.getData() != null) {
-//            Uri uri = data.getData();
-//            Snackbar.make(binding.getRoot(),"sdajk",Snackbar.LENGTH_SHORT);
-////            CosLoader cosLoader=new CosLoader(this);
-////            cosLoader.upload(this,uri);
-//        }
-//    }
+                //TODO USER
+               docInfoRepository.setInsertListener(docsId ->{
+                            CosLoader cosLoader = new CosLoader(MainActivity.this);
+                            cosLoader.setResultListener((upload,result)->{
 
+                            }).upload(this,docsUri,docsId);
+               }).insert(docsInfo);
+
+        }).start();
+
+    }
+
+    public boolean checkPermission()
+    {
+        if(!Environment.isExternalStorageManager()) {
+            String message = String.format("您拒绝了相关权限，无法正常使用上传功能。请前往 设置->应用管理->%s->权限管理中启用权限", getString(R.string.app_name));
+
+            AlertDialog alertDialog = (new AlertDialog.Builder(this)).
+                    setTitle("权限被禁用").
+                    setMessage(message).
+                    setCancelable(false).
+                    setNegativeButton("返回", (d,w)->{}).
+                    setPositiveButton("去设置",(d,w)-> {
+                                Intent intent;
+                                if (Build.VERSION.SDK_INT >= 30) {
+                                    intent = new Intent("android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION");
+                                    intent.setData(Uri.parse("package:" + getPackageName()));
+                                }
+
+                                else {
+                                    intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS");
+                                    intent.setData(Uri.parse("package:" + getPackageName()));
+                                }
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
+                    ).create();
+            alertDialog.show();
+            return false;
+        }
+        return true;
+    }
+
+    public String getSavePathDir() {
+        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+            return new File(getExternalFilesDir(null), userViewModel.getUser().getName()).toString();
+        }
+        return new File(getFilesDir(), userViewModel.getUser().getName()).toString();
+    }
+
+    public String getTempPathDir() {
+        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+            return new File(getExternalCacheDir(), userViewModel.getUser().getName()).toString();
+        }
+        return new File(getCacheDir(), userViewModel.getUser().getName()).toString();
+    }
 }

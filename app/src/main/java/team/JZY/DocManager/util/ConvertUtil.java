@@ -13,7 +13,7 @@ import java.util.Map;
 
 import team.JZY.DocManager.model.DocInfo;
 
-public class Converter {
+public class ConvertUtil {
 //    Map<String,Integer>classificationMap;
     private static final Map<String,Integer>typeMap;
     private static final List<String>classificationList;
@@ -53,36 +53,36 @@ public class Converter {
         );
         classificationList = new ArrayList<String>(
                 Arrays.asList("大学","中小学","职场","经济","计算机","科学","健康","人文",
-                    "三农","文学","生活","娱乐","时尚","体育","社会","二次元",
+                    "三农","文学","休闲","生活","娱乐","时尚","体育","社会","二次元",
                     "其他")
         );
         typeMap = new HashMap<String, Integer>();
-        typeMap.put("doc",1);
-        typeMap.put("docx",2);
-        typeMap.put("ppt",3);
-        typeMap.put("pptx",4);
-        typeMap.put("pdf",5);
+        typeMap.put("doc",0);
+        typeMap.put("docx",1);
+        typeMap.put("ppt",2);
+        typeMap.put("pptx",3);
+        typeMap.put("pdf",4);
     }
-    public static int getType(String type) {
+    public static int StringConvertToType(String type) {
         return typeMap.get(type);
     }
-    public static String getType(int type) {
+    public static String TypeConvertToString(int type) {
         return typeList.get(type);
     }
-    public static String getClassification(int classification) {
+    public static String ClassificationConvertToString(int classification) {
         return classificationList.get(classification);
     }
-    public static DocInfo getInfo(ZFileBean file) throws Exception {
+    public static DocInfo FileConvertToDocInfo(ZFileBean file) throws Exception {
         int nameStartIndex=file.getFileName().lastIndexOf(File.separatorChar)+1;
         String fileName = file.getFileName().substring(nameStartIndex);
         Log.d("SLDJDK", fileName);
         int preIndex = fileName.lastIndexOf(".") + 1;
         int lastIndex = fileName.length();
-        int type = getType(fileName.substring(preIndex, lastIndex));
+        int type = StringConvertToType(fileName.substring(preIndex, lastIndex));
         String name = fileName.substring(0,preIndex-1);
         String size = file.getSize();
         int visits = 0;
-        int classification =TextClassification.getInstance().getClassification(name);
+        int classification = TextClassificationUtil.getInstance().getClassification(name);
         return new DocInfo(name,type,classification,visits,size);
     }
 }
