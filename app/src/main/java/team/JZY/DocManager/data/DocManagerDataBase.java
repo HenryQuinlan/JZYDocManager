@@ -7,8 +7,9 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import team.JZY.DocManager.model.DocInfo;
+import team.JZY.DocManager.model.Record;
 
-@Database(entities = {DocInfo.class},version = 1,exportSchema = false)
+@Database(entities = {DocInfo.class, Record.class},version = 1,exportSchema = false)
 public abstract class DocManagerDataBase extends RoomDatabase {
     private static DocManagerDataBase INSTANCE;
     static DocManagerDataBase getInstance(Context context){//必须通过这个函数获得数据库实例
@@ -19,4 +20,7 @@ public abstract class DocManagerDataBase extends RoomDatabase {
         return INSTANCE;
     }
     public abstract DocInfoDao getDocInfoDao();
+    public abstract RecordDao getRecordDao();
+
 }
+

@@ -49,7 +49,7 @@ public class HomepageFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(HomepageViewModel.class);
-        binding.textView.setText(userViewModel.getUser().name);
+        binding.textView.setText(userViewModel.getUser().getName());
         // TODO: Use the ViewModel
     }
 

@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class DocInfo {
     @PrimaryKey(autoGenerate = true)
-    private Long id;
+    private long id;
     @ColumnInfo(name="name")
     private String name;
 //    @ColumnInfo(name="uri")
@@ -27,6 +27,10 @@ public class DocInfo {
         this.visits = visits;
         this.type = type;
         this.size = size;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getId() {

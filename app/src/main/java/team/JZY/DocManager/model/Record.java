@@ -2,68 +2,103 @@ package team.JZY.DocManager.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+
+import java.util.Date;
+
+import team.JZY.DocManager.R;
 
 @Entity
 public class Record {
-    private DocInfo docInfo;
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
     @ColumnInfo(name="Operator")
-    private String userName;
+    private String Operator;
     @ColumnInfo(name="OperationType")
-    private int operationType;
+    private int OperationType;
 
     @ColumnInfo(name="DocID")
-    private long DocID=docInfo.getId();
+    private long DocID;
     @ColumnInfo(name="DocName")
-    private String DocName=docInfo.getName();
+    private String DocName;
     @ColumnInfo(name="DocType")
-    private int DocType=docInfo.getType();
+    private int DocType;
+    @ColumnInfo(name="Date")
+    private java.util.Date Date;
 
-    public Record(String userName,DocInfo docInfo,int operationType){
-        this.userName=userName;
-        this.docInfo=docInfo;
-        this.operationType=operationType;
+    @Ignore
+    public static int TYPE_UPLOAD = 0;
+    @Ignore
+    public static int TYPE_DOWNLOAD = 1;
+    @Ignore
+    public static int TYPE_VISIT = 2;
+    @Ignore
+    public static int TYPE_FAVORITE = 3;
+
+    public Record(String operator, int operationType, long docID, String docName, int docType) {
+        this.Operator = operator;
+        this.OperationType = operationType;
+        this.DocID = docID;
+        this.DocName = docName;
+        this.DocType = docType;
+    }
+    public Record(String operator, int operationType, long docID) {
+        this.Operator = operator;
+        this.OperationType = operationType;
+        this.DocID = docID;
     }
 
-    public DocInfo getDocInfo() {
-        return docInfo;
+    public void setDate(){
+        Date date=new Date();
+        this.Date=date;
     }
 
-    public void setDocInfo(DocInfo docInfo) {
-        this.docInfo = docInfo;
-    }
-
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public String getUserName() {
-        return userName;
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getOperator() {
+        return Operator;
+    }
+
+    public void setOperator(String operator) {
+        Operator = operator;
     }
 
     public int getOperationType() {
-        return operationType;
+        return OperationType;
+    }
+
+    public void setOperationType(int operationType) {
+        OperationType = operationType;
     }
 
     public long getDocID() {
         return DocID;
     }
 
+    public void setDocID(long docID) {
+        DocID = docID;
+    }
+
     public String getDocName() {
         return DocName;
+    }
+
+    public void setDocName(String docName) {
+        DocName = docName;
     }
 
     public int getDocType() {
         return DocType;
     }
 
-    public void setOperationType(int operationType) {
-        this.operationType = operationType;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setDocType(int docType) {
+        DocType = docType;
     }
 }

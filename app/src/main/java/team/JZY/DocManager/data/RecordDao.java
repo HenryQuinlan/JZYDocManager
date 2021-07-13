@@ -9,22 +9,35 @@ import androidx.room.Update;
 
 import java.util.List;
 
+import team.JZY.DocManager.model.DocInfo;
 import team.JZY.DocManager.model.Record;
 
 @Dao
 public interface RecordDao {
+//    public void updateRecord(String userName, DocInfo docInfo, int operationType);
+//    public List<Record>getDownloadRecord(String UserName);
+//    public List<Record>getUploadRecord(String UserName);
+//    public List<Record>getVisitRecord(String UserName);
+//    public List<Record> getFavoriteRecord(String UserName);
+//    public void deleteRecord(String userName,DocInfo docInfo,int operationType);
+
     @Insert
-    void insertOperation(Record...records);
-    @Update
-    void updateOperation(Record...records);
+    void insert(Record...records);
+
+
+    @Query(value = "SELECT * FROM Record where  OperationType = :OperationType and Operator=:Operator order by id DESC")
+    List<Record>findOperation(String Operator,int OperationType);
+
+    @Query(value = "SELECT * FROM Record where  OperationType = :OperationType and Operator=:Operator and docId = :docId order by id DESC")
+    List<Record>findOperation(String Operator,int OperationType,long docId);
+
+
     @Delete
     void deleteOperation(Record...records);
+
     @Query("DELETE FROM Record")
     void deleteAllRecord();
-    @Query("SELECT * FROM Record ORDER BY ID DESC")
-    LiveData<List<Record>> getAllRecordsLive();
-    @Query(value = "SELECT * FROM Record where  OperationType = :OperationType and Operator=:Operator order by id DESC")
-        //livedata
-    List<Record>findOperation(int OperationType,String Operator);
+
+
 
 }

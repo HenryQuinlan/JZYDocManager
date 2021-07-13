@@ -10,23 +10,23 @@ import java.util.List;
 import team.JZY.DocManager.interfaces.DocInfoProvider;
 import team.JZY.DocManager.model.DocInfo;
 @Dao
-public interface DocInfoDao extends DocInfoProvider {
+public interface DocInfoDao  {
 
 
     //要继承provider
-        @Override
+
         @Insert//
         Long[] insert(DocInfo...docInfos);//返回id
 
-        @Override//
+        //
         @Query("update DocInfo set visits = :docVisits where id = :docId")
         void update(Long docId,int docVisits);
 
-        @Override//
+       //
         @Query("select  * from DocInfo order by random() limit :amount")
         List<DocInfo> request(int amount);//
 
-    @Override
+
     @Query("select * from docinfo where classification = :classification order by random() limit :amount")
     List<DocInfo> request(int amount, int classification);
 

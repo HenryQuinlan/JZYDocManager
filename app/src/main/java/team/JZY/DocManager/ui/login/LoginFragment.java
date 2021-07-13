@@ -56,7 +56,7 @@ public class LoginFragment extends Fragment {
                 SharedPreferences sharedPref = getContext().getSharedPreferences(getString(R.string.jzy_docManager_shared_preference_key), Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString(LoginViewModel.SAVE_LOGGED_IN_STATE_KEY, loggedInUserName);
-                editor.commit();
+                editor.apply();
                 MainActivity.start(getContext(),loggedInUserName);
                 getActivity().finish();
             }

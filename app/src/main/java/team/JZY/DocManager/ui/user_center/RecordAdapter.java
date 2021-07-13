@@ -2,9 +2,13 @@ package team.JZY.DocManager.ui.user_center;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,31 +18,30 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.util.List;
 
 import team.JZY.DocManager.R;
+import team.JZY.DocManager.databinding.RecordItemBinding;
 import team.JZY.DocManager.model.DocInfo;
+import team.JZY.DocManager.model.Record;
 
-public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
+public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder> {
 
-    private List<DocInfo> docsInfo;
+    private List<Record> recordList;
     private static final int[] DOC_TYPE_IMAGE_SOURCE = {
-            R.drawable.ic_doctype_doc,
-            R.drawable.ic_doctype_pdf,
-            R.drawable.ic_doctype_ppt};
-    private static final String TextDocInfoVisitsPrefix = "浏览量：";
-    private static final String TextDocInfoSizePrefix = "大小：";
+            //文件图片
+            R.drawable.,
+            R.drawable.,
+            R.drawable.};
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        private DocInfoItemBinding binding;
+        View view;
+        private RecordItemBinding binding;
         private ImageView docTypeView;
         private ImageButton downloadButton;
-        private ImageButton favoriteButton;
         private TextView nameText;
         private TextView attrText;
-        public ViewHolder(@NonNull @NotNull DocInfoItemBinding itemBinding) {
+        public ViewHolder(@NonNull @NotNull RecordItemBinding itemBinding) {
             super(itemBinding.getRoot());
             binding = itemBinding;
 //            docTypeView = (ImageView)itemView.findViewById(R.id.doc_info_type_view);
@@ -46,9 +49,13 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
 //            favoriteButton = (ImageButton)itemView.findViewById(R.id.doc_info_favorite_button);
 //            nameText = (TextView)itemView.findViewById(R.id.doc_info_name_text);
         }
+        public ViewHolder(View view){
+            super(view);
+            this.view=view;
+        }
     }
-    public DocInfoViewAdapter(List<DocInfo> docsInfo) {
-        this.docsInfo = docsInfo;
+    public RecordAdapter(List<Record> recordList) {
+        this.recordList = recordList;
     }
 
     @NonNull
@@ -56,32 +63,34 @@ public class FileAdapter extends RecyclerView.Adapter<FileAdapter.ViewHolder> {
     @Override
 
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        DocInfoItemBinding itemBinding = DocInfoItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-
+        RecordItemBinding itemBinding = RecordItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return  new ViewHolder(itemBinding);
     }
 
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
-        DocInfo docInfo = docsInfo.get(position);
-        holder.binding.docInfoNameText.setText(docInfo.getName());
-        holder.binding.docInfoVisitsAndSizeText.setText(
-                TextDocInfoVisitsPrefix+ docInfo.getVisits() +"  "+
-                        TextDocInfoSizePrefix+ docInfo.getSize()+"KB");
-        holder.binding.docInfoTypeView.setImageResource(
-                DOC_TYPE_IMAGE_SOURCE[docInfo.getType()]
-        );
-        holder.binding.docInfoDownloadButton.setOnClickListener(v -> {
-            Snackbar.make(v,""+ docInfo.getSize(),Snackbar.LENGTH_SHORT).show();
-        });
 
+        final ViewHolder viewHolder=new ViewHolder(
+        Record record = recordList.get(position);
+        holder.binding.docInfoNameText.setText(record.getDocName());
+        holder.binding.docInfoTypeView.setImageResource(
+                DOC_TYPE_IMAGE_SOURCE[record.getDocType()]
+        );
     }
 
     @Override
     public int getItemCount() {
-        return docsInfo.size();
+        return recordList.size();
     }
 
+    private OnItemClickListener onItemClickListener;
 
+    public interface OnItemClickListener{
+        void onItemLongClick(View view , int pos);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
 }
