@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import org.jetbrains.annotations.NotNull;
 
+import team.JZY.DocManager.DocManagerApplication;
 import team.JZY.DocManager.R;
 import team.JZY.DocManager.model.User;
 import team.JZY.DocManager.ui.UserViewModel;
@@ -22,7 +23,7 @@ import team.JZY.DocManager.ui.UserViewModel;
  * Use the {@link LocalDownloadFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class LocalDownloadFragment extends Fragment {
+public class LocalDownloadFragment extends DocManagerApplication.Fragment {
     //TODO UNKNOWN MAYBE WEBVIEW? OR LOCAL DOC MANAGER OR  JUST LOCAL DOWNLOAD
     private UserViewModel userViewModel;
     public LocalDownloadFragment() {

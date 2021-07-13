@@ -22,7 +22,7 @@ public interface DocInfoDao  {
     @Query("select  * from DocInfo order by random() limit :amount")
     public List<DocInfo>request(long amount);
 
-    @Query("select * from docinfo where classification = :classification order by random() limit :amount")
+    @Query("select * from docinfo where classification = :classification order by visits desc limit :amount")
     public List<DocInfo> request(long amount, int classification);
 
     @Query("update DocInfo set visits = :docVisits where id = :docId")

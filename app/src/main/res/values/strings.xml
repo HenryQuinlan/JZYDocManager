@@ -15,5 +15,23 @@
     <string name="button_cancel">取消</string>
     <string name="message_upload_complete">上传完成</string>
     <string name="message_download_complete">下载完成</string>
+    <string name="text_college">大学</string>
+    <string name="text_school">中小学</string>
+    <string name="text_workplace">职场</string>
+    <string name="text_economy">经济</string>
+    <string name="text_IT">计算机</string>
+    <string name="text_science">科学</string>
+    <string name="text_health">健康</string>
+    <string name="text_culture">人文</string>
+    <string name="text_algriculture">三农</string>
+    <string name="text_literature">文学</string>
+    <string name="text_leisure">休闲</string>
+    <string name="text_life">生活</string>
+    <string name="text_amusement">娱乐</string>
+    <string name="text_fashion">时尚</string>
+    <string name="text_sport">体育</string>
+    <string name="text_society">社会</string>
+    <string name="text_anime">二次元</string>
+    <string name="text_other">其他</string>
 
 </resources>

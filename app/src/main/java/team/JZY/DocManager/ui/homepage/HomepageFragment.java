@@ -13,15 +13,18 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import team.JZY.DocManager.DocManagerApplication;
 import team.JZY.DocManager.R;
 import team.JZY.DocManager.data.DocInfoRepository;
 import team.JZY.DocManager.databinding.HomepageFragmentBinding;
@@ -29,7 +32,7 @@ import team.JZY.DocManager.model.DocInfo;
 import team.JZY.DocManager.model.User;
 import team.JZY.DocManager.ui.UserViewModel;
 
-public class HomepageFragment extends Fragment {
+public class HomepageFragment extends DocManagerApplication.Fragment {
 
     private HomepageViewModel homepageViewModel;
     private UserViewModel userViewModel;
@@ -56,10 +59,9 @@ public class HomepageFragment extends Fragment {
         homepageViewModel = new ViewModelProvider(this).get(HomepageViewModel.class);
         homepageViewModel.getLiveInfo().observe(getViewLifecycleOwner(),(Observer<List<DocInfo>>)docsInfo->{
             if(docsInfo == null)return;
-            DocInfoViewAdapter adapter = new DocInfoViewAdapter(requireActivity(),docsInfo);
+            DocInfoViewAdapter adapter = new DocInfoViewAdapter(HomepageFragment.this.getMActivity(),docsInfo);
             recyclerView.setAdapter(adapter);
         });
-
         docInfoRepository  = DocInfoRepository.getInstance(requireActivity());
         getData();
     }

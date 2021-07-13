@@ -14,10 +14,11 @@ import android.view.ViewGroup;
 
 import org.jetbrains.annotations.NotNull;
 
+import team.JZY.DocManager.DocManagerApplication;
 import team.JZY.DocManager.R;
 import team.JZY.DocManager.ui.UserViewModel;
 
-public class ClassificationFragment extends Fragment {
+public class ClassificationFragment extends DocManagerApplication.Fragment {
 
     private ClassificationViewModel mViewModel;
     private UserViewModel userViewModel;
