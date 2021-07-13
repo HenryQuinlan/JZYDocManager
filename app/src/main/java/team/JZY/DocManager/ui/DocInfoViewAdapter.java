@@ -1,11 +1,12 @@
-package team.JZY.DocManager.ui.homepage;
+package team.JZY.DocManager.ui;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +22,7 @@ import team.JZY.DocManager.util.FileOpenUtil;
 public class DocInfoViewAdapter extends RecyclerView.Adapter<DocInfoViewAdapter.ViewHolder> {
 
     private DocManagerApplication.Activity activity;
-    private List<DocInfo> docsInfo;
+    private LiveData<List<DocInfo>> liveDocsInfo;
     private static final int[] DOC_TYPE_IMAGE_SOURCE = {
             R.drawable.ic_doctype_doc,
             R.drawable.ic_doctype_doc,
@@ -30,8 +31,7 @@ public class DocInfoViewAdapter extends RecyclerView.Adapter<DocInfoViewAdapter.
             R.drawable.ic_doctype_pdf};
     private static final String TextDocInfoVisitsPrefix = "浏览量：";
     private static final String TextDocInfoSizePrefix = "大小：";
-    private String savePathDir;
-    private String tempPathDir;
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private DocInfoItemBinding binding;
@@ -49,11 +49,9 @@ public class DocInfoViewAdapter extends RecyclerView.Adapter<DocInfoViewAdapter.
 //            nameText = (TextView)itemView.findViewById(R.id.doc_info_name_text);
         }
     }
-    public DocInfoViewAdapter(DocManagerApplication.Activity activity,List<DocInfo> docsInfo) {
+    public DocInfoViewAdapter(DocManagerApplication.Activity activity,LiveData<List<DocInfo>> liveDocsInfo) {
         this.activity = activity;
-        this.docsInfo = docsInfo;
-        this.savePathDir = savePathDir;
-        this.tempPathDir = tempPathDir;
+        this.liveDocsInfo = liveDocsInfo;
     }
 
     @NonNull
@@ -68,7 +66,7 @@ public class DocInfoViewAdapter extends RecyclerView.Adapter<DocInfoViewAdapter.
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
-        DocInfo docInfo = docsInfo.get(position);
+        DocInfo docInfo = liveDocsInfo.getValue().get(position);
         holder.binding.docInfoNameText.setText(docInfo.getName());
         holder.binding.docInfoVisitsAndSizeText.setText(
                 TextDocInfoVisitsPrefix+docInfo.getVisits()+"  "+
@@ -77,11 +75,19 @@ public class DocInfoViewAdapter extends RecyclerView.Adapter<DocInfoViewAdapter.
                 DOC_TYPE_IMAGE_SOURCE[docInfo.getType()]
         );
         //TODO USER
-        holder.binding.docInfoDownloadButton.setOnClickListener(v -> {
-            onDownloadClicked(docsInfo.get(holder.getAdapterPosition()));
-        });
+        if(FileOpenUtil.isFileDownloaded(activity,docInfo)) {
+            holder.binding.docInfoDownloadButton.setImageResource(R.drawable.ic_toolbar_download_pressed_disable);
+        }
+        else {
+            holder.binding.docInfoDownloadButton.setImageResource(R.drawable.ic_toolbar_download);
+            holder.binding.docInfoDownloadButton.setOnClickListener(v -> {
+                onDownloadClicked(liveDocsInfo.getValue().get(holder.getAdapterPosition()));
+                holder.binding.docInfoDownloadButton.setImageResource(R.drawable.ic_toolbar_download_pressed_disable);
+            });
+
+        }
         holder.binding.getRoot().setOnClickListener(v -> {
-            onVisitClicked(docsInfo.get(holder.getAdapterPosition()));
+            onVisitClicked(liveDocsInfo.getValue().get(holder.getAdapterPosition()));
         });
         holder.binding.docInfoFavorieButton.setOnClickListener( v -> {
 
@@ -90,7 +96,7 @@ public class DocInfoViewAdapter extends RecyclerView.Adapter<DocInfoViewAdapter.
 
     @Override
     public int getItemCount() {
-        return docsInfo.size();
+        return liveDocsInfo.getValue().size();
     }
 
     private void onDownloadClicked(DocInfo docInfo) {

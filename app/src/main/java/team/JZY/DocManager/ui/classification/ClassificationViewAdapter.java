@@ -17,11 +17,10 @@ import team.JZY.DocManager.databinding.ClassificationItemBinding;
 
 public class ClassificationViewAdapter extends RecyclerView.Adapter<ClassificationViewAdapter.ViewHolder> {
 
-    private List<ClassificationHolder> classificationHolders;
+
     private Context context;
-    public ClassificationViewAdapter (Context context, List<ClassificationHolder> classificationHolders) {
+    public ClassificationViewAdapter (Context context) {
         this.context = context;
-        this.classificationHolders = classificationHolders;
     }
 
     @NonNull
@@ -34,19 +33,21 @@ public class ClassificationViewAdapter extends RecyclerView.Adapter<Classificati
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
-        ClassificationHolder classificationHolder = classificationHolders.get(position);
-        holder.binding.classificationImageButton.setBackgroundResource(R.drawable.ic_doctype_doc);
+
+        holder.binding.classificationImageButton.setBackgroundResource(CLASSIFICATION_IMAGE_RESOURCE[position]);
         holder.binding.classificationNameText.setText(CLASSIFICATION_TEXT_RESOURCE[position]);
-       // holder.binding.getRoot().setOnClickListener(v->);
+        holder.binding.getRoot().setOnClickListener(v->onItemClicked(position));
+        holder.binding.classificationNameText.setOnClickListener(v->onItemClicked(position));
+        holder.binding.classificationImageButton.setOnClickListener(v->onItemClicked(position));
     }
 
     @Override
     public int getItemCount() {
-        return classificationHolders.size();
+        return CLASSIFICATION_NUMBER;
     }
 
-    private void onItemClicked(int positon) {
-       // Intent intent = new Intent(context,)
+    private void onItemClicked(int position) {
+        ClassificationActivity.start(context,position);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -65,7 +66,7 @@ public class ClassificationViewAdapter extends RecyclerView.Adapter<Classificati
             this.classificationImageResource = classificationImageResource;
         }
     }
-
+    public static int CLASSIFICATION_NUMBER = 18;
     public static int[] CLASSIFICATION_TEXT_RESOURCE = {
             R.string.text_college,
             R.string.text_school,
@@ -75,7 +76,7 @@ public class ClassificationViewAdapter extends RecyclerView.Adapter<Classificati
             R.string.text_science,
             R.string.text_health,
             R.string.text_culture,
-            R.string.text_algriculture,
+            R.string.text_agriculture,
             R.string.text_literature,
             R.string.text_leisure,
             R.string.text_life,
@@ -87,5 +88,24 @@ public class ClassificationViewAdapter extends RecyclerView.Adapter<Classificati
             R.string.text_other
     };
 
-    //TODO public static int CLASSIFICATION_IMAGE_RESOURCE
+    public static int CLASSIFICATION_IMAGE_RESOURCE[] = {
+            R.drawable.image_college,
+            R.drawable.image_school,
+            R.drawable.image_workplace,
+            R.drawable.image_economy,
+            R.drawable.image_it,
+            R.drawable.image_science,
+            R.drawable.image_health,
+            R.drawable.image_culture,
+            R.drawable.image_agriculture,
+            R.drawable.image_literature,
+            R.drawable.image_leisure,
+            R.drawable.image_life,
+            R.drawable.image_amusement,
+            R.drawable.image_fashion,
+            R.drawable.image_sport,
+            R.drawable.image_society,
+            R.drawable.image_anime,
+            R.drawable.image_other
+    };
 }

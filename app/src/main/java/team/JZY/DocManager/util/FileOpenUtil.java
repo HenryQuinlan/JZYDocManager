@@ -66,7 +66,6 @@ public class FileOpenUtil {
         if(!file.exists()) {
             CosLoader cosLoader = new CosLoader(activity);
             cosLoader.setResultListener((download,result)->{
-
                 if(result.equals("success")) {
                     FileOpenUtil.open(file,docInfo.getType(),activity);
                 }
@@ -93,12 +92,18 @@ public class FileOpenUtil {
             cosLoader.setResultListener((download,result)->{
                 if(result == "success") {
                     FileOpenUtil.open(tempFile,docInfo.getType(),activity);
-
                 }
                 else {
 
                 }
             }).download(activity,docInfo.getId(),saveTempDir,savedFileName);
         }
+    }
+    public static boolean isFileDownloaded(DocManagerApplication.Activity activity,DocInfo docInfo) {
+        long docId = docInfo.getId();
+        String savePathDir = activity.getSavePathDir();
+        String savedFileName = docInfo.getName()+"."+ ConvertUtil.TypeConvertToString(docInfo.getType());
+        File file = new File(savePathDir,savedFileName);
+        return file.exists();
     }
 }
