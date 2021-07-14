@@ -54,7 +54,7 @@ public class HomepageFragment extends DocManagerApplication.Fragment {
         super.onViewCreated(view, savedInstanceState);
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
         homepageViewModel = new ViewModelProvider(this).get(DocInfoViewModel.class);
-        docInfoViewAdapter = new DocInfoViewAdapter(getMActivity(),homepageViewModel.getLiveInfo());
+        docInfoViewAdapter = new team.JZY.DocManager.ui.homepage.DocInfoViewAdapter(getMActivity(),homepageViewModel.getLiveInfo());
         recyclerView.setAdapter(docInfoViewAdapter);
         homepageViewModel.getLiveInfo().observe(getViewLifecycleOwner(),(Observer<List<DocInfo>>)docsInfo->{
             docInfoViewAdapter.notifyDataSetChanged();

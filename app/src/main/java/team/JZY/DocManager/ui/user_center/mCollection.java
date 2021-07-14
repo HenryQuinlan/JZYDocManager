@@ -37,6 +37,7 @@ public class mCollection extends AppCompatActivity {
             @Override
             public void onItemLongClick(View view, int pos) {
                 PopupMenu popupMenu=new PopupMenu(mCollection.this,view);
+                Record record =recordList.get(pos);
                 popupMenu.getMenuInflater().inflate(R.menu.collection_menu,popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 
@@ -46,11 +47,11 @@ public class mCollection extends AppCompatActivity {
 
                         }
                         if(item.getItemId()==R.id.cancel) {
-                            recordRepository.deleteRecord(username,Record.TYPE_FAVORITE,);
+                            recordRepository.deleteRecord(username,Record.TYPE_FAVORITE,record.getDocID());
                             recordAdapter.notifyItemRemoved(pos);
                         }
                         if(item.getItemId()==R.id.download){
-                           // recordRepository.insertRecord(username,Record.TYPE_DOWNLOAD,);
+                           recordRepository.insertRecord(username,Record.TYPE_DOWNLOAD,record.getDocID());
                         }
                         return false;
                     }

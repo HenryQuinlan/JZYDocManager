@@ -37,6 +37,7 @@ public class mUpload extends AppCompatActivity {
             @Override
             public void onItemLongClick(View view, int pos) {
                 PopupMenu popupMenu=new PopupMenu(mUpload.this,view);
+                Record record =recordList.get(pos);
                 popupMenu.getMenuInflater().inflate(R.menu.update_menu,popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 
@@ -46,14 +47,14 @@ public class mUpload extends AppCompatActivity {
 
                         }
                         if(item.getItemId()==R.id.favourite) {
-                            recordRepository.insertRecord(username,Record.TYPE_FAVORITE,);
+                            recordRepository.insertRecord(username,Record.TYPE_FAVORITE,record.getDocID());
 
                         }
                         if(item.getItemId()==R.id.download){
-                            recordRepository.insertRecord(username,Record.TYPE_DOWNLOAD,);
+                            recordRepository.insertRecord(username,Record.TYPE_DOWNLOAD,record.getDocID());
                         }
                         if(item.getItemId()==R.id.delete){
-                            recordRepository.deleteRecord(username,Record.TYPE_VISIT,);
+                            recordRepository.deleteRecord(username,Record.TYPE_VISIT,record.getDocID());
                             recordAdapter.notifyItemRemoved(pos);
                         }
                         return false;

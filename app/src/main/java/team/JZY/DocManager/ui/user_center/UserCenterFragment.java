@@ -16,6 +16,7 @@ import android.widget.Button;
 import org.jetbrains.annotations.NotNull;
 
 import team.JZY.DocManager.R;
+import team.JZY.DocManager.databinding.UserCenterFragmentBinding;
 import team.JZY.DocManager.ui.UserViewModel;
 
 /**

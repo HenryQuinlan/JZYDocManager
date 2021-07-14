@@ -32,11 +32,12 @@ public class mRecord extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         RecordAdapter recordAdapter=new RecordAdapter(recordList);
-        recyclerView.setAdapter(recordAdapter);
+
         recordAdapter.setOnItemClickListener(new RecordAdapter.OnItemClickListener() {
             @Override
             public void onItemLongClick(View view, int pos) {
                 PopupMenu popupMenu=new PopupMenu(mRecord.this,view);
+                Record record =recordList.get(pos);
                 popupMenu.getMenuInflater().inflate(R.menu.record_menu,popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
 
@@ -46,14 +47,14 @@ public class mRecord extends AppCompatActivity {
 
                         }
                         if(item.getItemId()==R.id.favourite) {
-                            recordRepository.insertRecord(username,Record.TYPE_FAVORITE,);
+                            recordRepository.insertRecord(username,Record.TYPE_FAVORITE,record.getDocID());
 
                         }
                         if(item.getItemId()==R.id.download){
-                            recordRepository.insertRecord(username,Record.TYPE_DOWNLOAD,);
+                            recordRepository.insertRecord(username,Record.TYPE_DOWNLOAD,record.getDocID());
                         }
                         if(item.getItemId()==R.id.delete){
-                            recordRepository.deleteRecord(username,Record.TYPE_VISIT,);
+                            recordRepository.deleteRecord(username,Record.TYPE_VISIT,record.getDocID());
                             recordAdapter.notifyItemRemoved(pos);
                         }
                         return false;
@@ -62,7 +63,7 @@ public class mRecord extends AppCompatActivity {
                 popupMenu.show();
             }
         });
-
+        recyclerView.setAdapter(recordAdapter);
     }
 
 //    private void initRecords(){

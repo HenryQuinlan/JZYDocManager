@@ -20,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
 import team.JZY.DocManager.DocManagerApplication;
 import team.JZY.DocManager.R;
 import team.JZY.DocManager.databinding.ClassificationFragmentBinding;
-import team.JZY.DocManager.ui.DocInfoViewAdapter;
 import team.JZY.DocManager.ui.UserViewModel;
 import team.JZY.DocManager.ui.homepage.HomepageFragment;
 

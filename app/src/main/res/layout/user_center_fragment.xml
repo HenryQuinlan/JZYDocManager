@@ -5,13 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.user_center.UserCenterFragment">
+
+    <!--我的下载-->
+
     <TextView
 
         android:id="@+id/textView2"
-        android:layout_width="77dp"
-        android:layout_height="23dp"
-        android:layout_marginStart="73dp"
-        android:layout_marginLeft="73dp"
+        android:layout_width="66dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="72dp"
         android:layout_marginTop="41dp"
         android:layout_marginBottom="90dp"
         android:text="username"
@@ -20,7 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
-    <!--我的下载-->
+
     <LinearLayout
         android:id="@+id/my_download_layout"
 
@@ -160,7 +162,7 @@
             android:layout_width="36dp"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/my_upload_img" />
+            android:src="@drawable/my_update_img" />
 
         <TextView
             android:id="@+id/my_upload"

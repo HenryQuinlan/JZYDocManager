@@ -29,19 +29,22 @@ public class Record {
     public static int TYPE_VISIT = 2;
     @Ignore
     public static int TYPE_FAVORITE = 3;
+    public Record(){
+
+    }
 
     public Record(String operator, int operationType, long docID, String docName, int docType) {
-        this.Operator = operator;
-        this.OperationType = operationType;
-        this.DocID = docID;
-        this.DocName = docName;
-        this.DocType = docType;
+        Operator = operator;
+        OperationType = operationType;
+        DocID = docID;
+        DocName = docName;
+        DocType = docType;
     }
-    public Record(String operator, int operationType, long docID) {
-        this.Operator = operator;
-        this.OperationType = operationType;
-        this.DocID = docID;
-    }
+//    public Record(String operator, int operationType, long docID) {
+//        this.Operator = operator;
+//        this.OperationType = operationType;
+//        this.DocID = docID;
+//    }
 
 
     public long getId() {

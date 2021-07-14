@@ -30,9 +30,11 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
     private List<Record> recordList;
     private static final int[] DOC_TYPE_IMAGE_SOURCE = {
             //文件图片
-            R.drawable.,
-            R.drawable.,
-            R.drawable.};
+            R.drawable.ic_doctype_doc,
+            R.drawable.ic_doctype_doc,
+            R.drawable.ic_doctype_ppt,
+            R.drawable.ic_doctype_ppt,
+            R.drawable.ic_doctype_pdf};
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         View view;
@@ -71,7 +73,6 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
 
-        final ViewHolder viewHolder=new ViewHolder(
         Record record = recordList.get(position);
         holder.binding.docInfoNameText.setText(record.getDocName());
         holder.binding.docInfoTypeView.setImageResource(
