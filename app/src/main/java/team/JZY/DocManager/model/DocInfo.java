@@ -12,20 +12,21 @@ public class DocInfo {
     private String name;
 //    @ColumnInfo(name="uri")
 //    private String uri;
+    @ColumnInfo(name="type")
+    private int type;
     @ColumnInfo(name="classification")
     private int classification;
     @ColumnInfo(name="visits")
-    private int visits;
-    @ColumnInfo(name="type")
-    private int type;
-    @ColumnInfo(name="size")
-    private int size;
+    private long visits;
 
-    public DocInfo(String name, int classification, int visits, int type, int size) {
+    @ColumnInfo(name="size")
+    private String size;
+
+    public DocInfo(String name, int type, int classification, long visits, String size) {
         this.name = name;
+        this.type = type;
         this.classification = classification;
         this.visits = visits;
-        this.type = type;
         this.size = size;
     }
 
@@ -35,6 +36,10 @@ public class DocInfo {
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -53,7 +58,7 @@ public class DocInfo {
         this.classification = classification;
     }
 
-    public int getVisits() {
+    public long getVisits() {
         return visits;
     }
 
@@ -69,11 +74,11 @@ public class DocInfo {
         this.type = type;
     }
 
-    public int getSize() {
+    public String getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(String size) {
         this.size = size;
     }
 }

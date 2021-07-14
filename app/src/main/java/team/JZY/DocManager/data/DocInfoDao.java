@@ -3,47 +3,34 @@ package team.JZY.DocManager.data;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import java.util.List;
 
+
 import team.JZY.DocManager.interfaces.DocInfoProvider;
 import team.JZY.DocManager.model.DocInfo;
 @Dao
-public interface DocInfoDao  {
+public interface DocInfoDao {
 
 
     //要继承provider
+    @Insert
+    public List<Long> insert(List<DocInfo> docsInfo);
 
-        @Insert//
-        Long[] insert(DocInfo...docInfos);//返回id
-
-        //
-        @Query("update DocInfo set visits = :docVisits where id = :docId")
-        void update(Long docId,int docVisits);
-
-       //
-        @Query("select  * from DocInfo order by random() limit :amount")
-        List<DocInfo> request(int amount);//
-
+    @Query("select  * from DocInfo order by random() limit :amount")
+    public List<DocInfo> request(long amount);
 
     @Query("select * from docinfo where classification = :classification order by random() limit :amount")
-    List<DocInfo> request(int amount, int classification);
+    public List<DocInfo> request(long amount, int classification);
+
+    @Query("update DocInfo set visits = :docVisits where id = :docId")
+    public void update(long docId, long docVisits);
 
     @Query("select id from docinfo order by id desc limit 1")
-    int getSize();
-//    @Override
-//    ---------------
-//    List<DocInfo> request(String searchKeyWord);
+    public long getSize();
 
-        @Delete//
-        void deleteDocInfo(DocInfo...docInfos);
-
-        @Query("delete from docinfo")//
-        void deleteAllDocInfo();
-
-
-        @Query("select  * from DocInfo order by id desc")//
-        List<DocInfo> getAllDocInfo();//获得全部的数据
-
+    @Query("delete from docinfo where 1")
+    public void deleteAll();
 }

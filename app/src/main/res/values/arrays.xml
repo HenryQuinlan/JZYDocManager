@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="doc_classification">
+        <item>大学</item>
+        <item>中小学</item>
+        <item>职场</item>
+        <item>模板</item>
+        <item>经济</item>
+        <item>计算机</item>
+        <item>科学</item>
+        <item>工程</item>
+        <item>医药</item>
+        <item>人文</item>
+        <item>农牧</item>
+        <item>文学</item>
+        <item>生活</item>
+        <item>娱乐</item>
+        <item>时尚</item>
+        <item>体育</item>
+        <item>影视</item>
+        <item>二次元</item>
+        <item>其他</item>
+    </string-array>
+</resources>

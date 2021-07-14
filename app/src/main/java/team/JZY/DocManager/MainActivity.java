@@ -7,34 +7,56 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.provider.OpenableColumns;
-import android.util.Log;
+import android.os.Environment;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.PopupWindow;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.kathline.library.common.ZFileManageHelp;
+import com.kathline.library.content.ZFileBean;
+import com.kathline.library.content.ZFileConfiguration;
+import com.kathline.library.content.ZFileContent;
+import com.kathline.library.listener.ZFileListener;
 
 import java.io.File;
-import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
-import team.JZY.DocManager.data.DocInfoViewModol;
+import team.JZY.DocManager.data.DocInfoRepository;
 import team.JZY.DocManager.databinding.ActivityMainBinding;
+import team.JZY.DocManager.databinding.UploadPopupwindowBinding;
 import team.JZY.DocManager.model.DocInfo;
 import team.JZY.DocManager.model.User;
 import team.JZY.DocManager.ui.UserViewModel;
 import team.JZY.DocManager.data.CosLoader;
+import team.JZY.DocManager.util.ConvertUtil;
+import team.JZY.DocManager.util.ToastUtil;
 
 public class MainActivity extends AppCompatActivity {
-    DocInfoViewModol docInfoViewModol;
-    private final static int FILE_REQUEST_CODE = 400;
-    private File file;
+
 
     private static final String LOGGED_IN_USER_NAME_KEY = "loggedInUserNameKey";
+    private static final  int FILE_PICK_REQUEST_CODE = 4399;
+    public static final String DOC = "application/msword";
+    public static final String DOCX = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    public static final String PPT = "application/vnd.ms-powerpoint";
+    public static final String PPTX = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+    public static final String PDF = "application/pdf";
     private ActivityMainBinding binding;
     private UserViewModel userViewModel;
+    private DocInfoRepository docInfoRepository;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -42,19 +64,19 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        docInfoViewModol= new ViewModelProvider(this).get(DocInfoViewModol.class);
-
+        getSupportActionBar().hide();
 
         Intent intent = getIntent();
         String userName = intent.getStringExtra(LOGGED_IN_USER_NAME_KEY);
         User user = new User(userName);
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
-        userViewModel.setLiveUser(user);
+        userViewModel.setUser(user);
 
+        docInfoRepository = DocInfoRepository.getInstance(this);
 
         initNavigation();
-    
     }
+
     private void initNavigation(){
 
         // Passing each menu ID as a set of Ids because each
@@ -71,51 +93,141 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
-    private boolean onMenuItemUploadClicked()
+
+    public boolean onMenuItemUploadClicked()
     {
-        //上传
-        uploadAction();
+        createPopupWindow();
         return false;
     }
-    private void uploadAction(){
-        Log.d( "MainActivity","here: ");
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);  //  意图：文件浏览器
-        intent.setType("*/*");//无类型限制
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);  //  关键！多选参数为true
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        startActivityForResult(intent, FILE_REQUEST_CODE);
-    }
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.d("MainActivity", "owhat: ");
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d("MainActivity", "onActivityResult: ");
-        if (data.getData() != null) {
-            Uri uri = data.getData();
-            String[] arr = {MediaStore.Images.Media.DATA};
-            Cursor cursor = managedQuery(uri, arr, null, null, null);
-            int img_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            String img_path = cursor.getString(img_index);
-            file = new File(img_path);
-            long size=file.length();
-            String defaultName="";
-            int theClassification;
-            //
-            if(defaultName==""){
 
+    private void createPopupWindow(){
+        UploadPopupwindowBinding popupBinding = UploadPopupwindowBinding.inflate(LayoutInflater.from(this),null,false);
+
+        final PopupWindow popupWindow = new PopupWindow(popupBinding.getRoot(),
+                400, 350, true);
+
+        popupWindow.setAnimationStyle(R.anim.anim_pop);
+        popupWindow.setTouchable(true);
+        popupWindow.setTouchInterceptor(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return false;
             }
+        });
+        popupWindow.setBackgroundDrawable(new ColorDrawable(0x00000000));    //要为popupWindow设置一个背景才有效
 
+        //设置popupWindow显示的位置，参数依次是参照View，x轴的偏移量，y轴的偏移量
+        popupWindow.showAsDropDown(binding.navView, 340, -500);
+        popupBinding.getRoot().setOnClickListener(v->filePick());
+        popupBinding.buttonUpload.setOnClickListener(v->filePick());
+        popupBinding.textView.setOnClickListener(v->filePick());
 
-            DocInfo docInfo =new DocInfo(defaultName,1,0,2,10);
-            Long[] id=docInfoViewModol.insertDocInfo(docInfo);
-            Long theId=id[0];
-            CosLoader cosLoader=new CosLoader(this);
-            cosLoader.upload(this,uri,theId);
-        }
     }
+
     public static void start(Context context,String loggedInUserName) {
         Intent intent = new Intent(context,MainActivity.class);
         intent.putExtra(LOGGED_IN_USER_NAME_KEY,loggedInUserName);
         context.startActivity(intent);
+    }
+
+    private void filePick() {
+        //TODO MORE_SUPPORT TYPE
+        if(!checkPermission())return;
+        final ZFileConfiguration configuration = new ZFileConfiguration.Build()
+                //.resources(resources)
+                .maxLength(9)
+                .boxStyle(ZFileConfiguration.STYLE1)
+                .fileFilterArray(Build.VERSION.SDK_INT >= 30 ?
+                        new String[]{DOC,DOCX,PPT,PPTX,PDF} :
+                        new String[]{"doc","docx","ppt","pptx","pdf"})
+                .build();
+        ZFileContent.getZFileHelp()
+                .setConfiguration(configuration)
+                .init(new ZFileListener.ZFileImageListener() {
+                    @Override
+                    public void loadImage(ImageView imageView, File file) {
+                        Glide.with(imageView.getContext())
+                                .load(file)
+                                .apply(new RequestOptions().placeholder(R.drawable.ic_zfile_other).error(R.drawable.ic_zfile_other))
+                                .into(imageView);
+                    }
+                });
+        ZFileContent.getZFileHelp().start(this,(requestCode,resultCode,data)->{
+            List<ZFileBean> fileList = ZFileManageHelp.getInstance().getSelectData(getBaseContext(), requestCode, resultCode, data);
+            if (fileList == null || fileList.size() <= 0) {
+                return;
+            }
+            uploadAction(fileList);
+        });
+    }
+
+    private void uploadAction(List<ZFileBean> fileList) {
+
+        new Thread(()-> {
+                List<DocInfo>docsInfo = new ArrayList<DocInfo>();
+                List<Uri>docsUri = new ArrayList<Uri>();
+                for(ZFileBean file:fileList) {
+                    try {
+                        docsInfo.add(ConvertUtil.FileConvertToDocInfo(file));
+                        docsUri.add(Uri.fromFile(new File(file.getFilePath())));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                //TODO USER
+               docInfoRepository.setInsertListener(docsId ->{
+                            CosLoader cosLoader = new CosLoader(MainActivity.this);
+                            cosLoader.setResultListener((upload,result)->{
+
+                            }).upload(this,docsUri,docsId);
+               }).insert(docsInfo);
+
+        }).start();
+
+    }
+
+    public boolean checkPermission()
+    {
+        if(!Environment.isExternalStorageManager()) {
+            String message = String.format("您拒绝了相关权限，无法正常使用上传功能。请前往 设置->应用管理->%s->权限管理中启用权限", getString(R.string.app_name));
+
+            AlertDialog alertDialog = (new AlertDialog.Builder(this)).
+                    setTitle("权限被禁用").
+                    setMessage(message).
+                    setCancelable(false).
+                    setNegativeButton("返回", (d,w)->{}).
+                    setPositiveButton("去设置",(d,w)-> {
+                                Intent intent;
+                                if (Build.VERSION.SDK_INT >= 30) {
+                                    intent = new Intent("android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION");
+                                    intent.setData(Uri.parse("package:" + getPackageName()));
+                                }
+
+                                else {
+                                    intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS");
+                                    intent.setData(Uri.parse("package:" + getPackageName()));
+                                }
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
+                    ).create();
+            alertDialog.show();
+            return false;
+        }
+        return true;
+    }
+
+    public String getSavePathDir() {
+        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+            return new File(getExternalFilesDir(null), userViewModel.getUser().getName()).toString();
+        }
+        return new File(getFilesDir(), userViewModel.getUser().getName()).toString();
+    }
+
+    public String getTempPathDir() {
+        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+            return new File(getExternalCacheDir(), userViewModel.getUser().getName()).toString();
+        }
+        return new File(getCacheDir(), userViewModel.getUser().getName()).toString();
     }
 }

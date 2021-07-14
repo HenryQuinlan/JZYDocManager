@@ -12,14 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 
 import org.jetbrains.annotations.NotNull;
 
-import team.JZY.DocManager.MainActivity;
 import team.JZY.DocManager.R;
-import team.JZY.DocManager.databinding.LoginFragmentBinding;
-import team.JZY.DocManager.databinding.UserCenterFragmentBinding;
 import team.JZY.DocManager.ui.UserViewModel;
 
 /**
@@ -32,6 +28,7 @@ public class UserCenterFragment extends Fragment {
     private UserViewModel userViewModel;
     private UserCenterFragmentBinding binding;
     public UserCenterFragment() {
+        // Required empty public constructor
     }
 
 

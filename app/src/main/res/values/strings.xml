@@ -1,11 +1,19 @@
 <resources>
     <string name="app_name">JZYDocManager</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="navigation_title_homepage">首页</string>
     <string name="navigation_title_classification">分类</string>
     <string name="navigation_title_local_download">本地</string>
     <string name="navigation_title_user_center">我的</string>
     <string name="button_login">登 录</string>
     <string name="jzy_docManager_shared_preference_key">JZYDocManagerSharedPreferenceKey</string>
+    <string name="upload">上传</string>
+    <string name="text_enter_title">请输入文档标题</string>
+    <string name="text_choose_upload_to">请选择上传到</string>
+    <string name="text_classification">分类</string>
+    <string name="title_upload_file">上传文件</string>
+    <string name="button_ok">确定</string>
+    <string name="button_cancel">取消</string>
+    <string name="message_upload_complete">上传完成</string>
+    <string name="message_download_complete">下载完成</string>
+
 </resources>

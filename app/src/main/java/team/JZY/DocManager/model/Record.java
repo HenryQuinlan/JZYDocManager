@@ -5,10 +5,6 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import java.util.Date;
-
-import team.JZY.DocManager.R;
-
 @Entity
 public class Record {
     @PrimaryKey(autoGenerate = true)
@@ -24,8 +20,6 @@ public class Record {
     private String DocName;
     @ColumnInfo(name="DocType")
     private int DocType;
-    @ColumnInfo(name="Date")
-    private java.util.Date Date;
 
     @Ignore
     public static int TYPE_UPLOAD = 0;
@@ -49,10 +43,6 @@ public class Record {
         this.DocID = docID;
     }
 
-    public void setDate(){
-        Date date=new Date();
-        this.Date=date;
-    }
 
     public long getId() {
         return id;

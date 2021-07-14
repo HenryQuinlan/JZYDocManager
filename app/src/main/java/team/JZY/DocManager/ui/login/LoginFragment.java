@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 import team.JZY.DocManager.MainActivity;
 import team.JZY.DocManager.R;
 import team.JZY.DocManager.databinding.LoginFragmentBinding;
@@ -31,12 +33,11 @@ public class LoginFragment extends Fragment {
         // Required empty public constructor
     }
     public static LoginFragment newInstance() {
-        LoginFragment fragment = new LoginFragment();
-        return fragment;
+        return new LoginFragment();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = LoginFragmentBinding.inflate(inflater, container, false);
@@ -50,27 +51,21 @@ public class LoginFragment extends Fragment {
 
         loginViewModel = new ViewModelProvider(requireActivity()).get(LoginViewModel.class);
 
-
         loginViewModel.getLoggedInUserName().observe(getViewLifecycleOwner(), (Observer<String>)loggedInUserName->{
             if(loggedInUserName != null) {
-                SharedPreferences sharedPref = getContext().getSharedPreferences(getString(R.string.jzy_docManager_shared_preference_key), Context.MODE_PRIVATE);
+                SharedPreferences sharedPref = requireContext().getSharedPreferences(getString(R.string.jzy_docManager_shared_preference_key), Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString(LoginViewModel.SAVE_LOGGED_IN_STATE_KEY, loggedInUserName);
                 editor.apply();
                 MainActivity.start(getContext(),loggedInUserName);
-                getActivity().finish();
+                requireActivity().finish();
             }
         });
-
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        SharedPreferences sharedPref = getContext().getSharedPreferences(getString(R.string.jzy_docManager_shared_preference_key), Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = requireContext().getSharedPreferences(getString(R.string.jzy_docManager_shared_preference_key), Context.MODE_PRIVATE);
         String name = sharedPref.getString(LoginViewModel.SAVE_LOGGED_IN_STATE_KEY,null);
         loginViewModel.setLoggedInUserName(name);
     }
+
 
     public void onButtonLoginClicked() {
         String name = binding.textName.getText().toString();
