@@ -20,12 +20,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+import team.JZY.DocManager.DocManagerApplication;
 import team.JZY.DocManager.MainActivity;
 import team.JZY.DocManager.R;
 import team.JZY.DocManager.databinding.LoginFragmentBinding;
 import team.JZY.DocManager.ui.UserViewModel;
 
-public class LoginFragment extends Fragment {
+public class LoginFragment extends DocManagerApplication.Fragment {
 
     private LoginViewModel loginViewModel;
     private LoginFragmentBinding binding;
@@ -57,13 +58,14 @@ public class LoginFragment extends Fragment {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString(LoginViewModel.SAVE_LOGGED_IN_STATE_KEY, loggedInUserName);
                 editor.apply();
-                MainActivity.start(getContext(),loggedInUserName);
+                MainActivity.start(getContext());
                 requireActivity().finish();
             }
         });
         SharedPreferences sharedPref = requireContext().getSharedPreferences(getString(R.string.jzy_docManager_shared_preference_key), Context.MODE_PRIVATE);
         String name = sharedPref.getString(LoginViewModel.SAVE_LOGGED_IN_STATE_KEY,null);
         loginViewModel.setLoggedInUserName(name);
+        setLoggedInUserName(name);
     }
 
 

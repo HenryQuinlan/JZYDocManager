@@ -36,13 +36,14 @@ public class ConvertUtil {
     public static int CLASSIFICATION_CULTURE = 7;
     public static int CLASSIFICATION_AGRICULTURE = 8;
     public static int CLASSIFICATION_LITERATURE = 9;
-    public static int CLASSIFICATION_LIFE = 10;
-    public static int CLASSIFICATION_AMUSEMENT = 11;
-    public static int CLASSIFICATION_FASHION = 12;
-    public static int CLASSIFICATION_SPORT = 13;
-    public static int CLASSIFICATION_SOCIETY = 14;
-    public static int CLASSIFICATION_ANIME = 15;
-    public static int CLASSIFICATION_OTHER = 16;
+    public static int CLASSIFICATION_LEISURE = 10;
+    public static int CLASSIFICATION_LIFE = 11;
+    public static int CLASSIFICATION_AMUSEMENT = 12;
+    public static int CLASSIFICATION_FASHION = 13;
+    public static int CLASSIFICATION_SPORT = 14;
+    public static int CLASSIFICATION_SOCIETY = 15;
+    public static int CLASSIFICATION_ANIME = 16;
+    public static int CLASSIFICATION_OTHER = 17;
 
 
     static  {

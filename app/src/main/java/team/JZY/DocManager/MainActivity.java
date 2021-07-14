@@ -1,6 +1,5 @@
 package team.JZY.DocManager;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -42,9 +41,8 @@ import team.JZY.DocManager.model.User;
 import team.JZY.DocManager.ui.UserViewModel;
 import team.JZY.DocManager.data.CosLoader;
 import team.JZY.DocManager.util.ConvertUtil;
-import team.JZY.DocManager.util.ToastUtil;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends DocManagerApplication.Activity {
 
 
     private static final String LOGGED_IN_USER_NAME_KEY = "loggedInUserNameKey";
@@ -59,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
     private DocInfoRepository docInfoRepository;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -122,12 +119,6 @@ public class MainActivity extends AppCompatActivity {
         popupBinding.buttonUpload.setOnClickListener(v->filePick());
         popupBinding.textView.setOnClickListener(v->filePick());
 
-    }
-
-    public static void start(Context context,String loggedInUserName) {
-        Intent intent = new Intent(context,MainActivity.class);
-        intent.putExtra(LOGGED_IN_USER_NAME_KEY,loggedInUserName);
-        context.startActivity(intent);
     }
 
     private void filePick() {
@@ -217,17 +208,5 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public String getSavePathDir() {
-        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
-            return new File(getExternalFilesDir(null), userViewModel.getUser().getName()).toString();
-        }
-        return new File(getFilesDir(), userViewModel.getUser().getName()).toString();
-    }
 
-    public String getTempPathDir() {
-        if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
-            return new File(getExternalCacheDir(), userViewModel.getUser().getName()).toString();
-        }
-        return new File(getCacheDir(), userViewModel.getUser().getName()).toString();
-    }
 }

@@ -1,4 +1,4 @@
-package team.JZY.DocManager.ui.homepage;
+package team.JZY.DocManager.ui;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -9,7 +9,7 @@ import java.util.List;
 
 import team.JZY.DocManager.model.DocInfo;
 
-public class HomepageViewModel extends ViewModel {
+public class DocInfoViewModel extends ViewModel {
 
     private MutableLiveData<List<DocInfo>> liveDocsInfo;
 

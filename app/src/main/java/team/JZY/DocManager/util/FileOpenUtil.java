@@ -13,7 +13,10 @@ import com.kathline.library.util.ZFileLog;
 
 import java.io.File;
 
+import team.JZY.DocManager.DocManagerApplication;
 import team.JZY.DocManager.MainActivity;
+import team.JZY.DocManager.data.CosLoader;
+import team.JZY.DocManager.model.DocInfo;
 
 public class FileOpenUtil {
 
@@ -22,6 +25,7 @@ public class FileOpenUtil {
     public static final String PPT = "application/vnd.ms-powerpoint";
     public static final String PPTX = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
     public static final String PDF = "application/pdf";
+
 
     public static void open(File file,int type,Context context) {
         if(type == ConvertUtil.TYPE_DOC)open(file,DOC,context);
@@ -52,28 +56,54 @@ public class FileOpenUtil {
 
         }
     }
-//    @SuppressLint("WrongConstant")
-//    private static void open(String filePath, String type, Context context) {
-//        try {
-//            Intent intent = new Intent("android.intent.action.VIEW");
-//            intent.addCategory("android.intent.category.DEFAULT");
-//            intent.addFlags(268435456);
-//            intent.addFlags(1);
-//            Uri contentUri;
-//            if (Build.VERSION.SDK_INT >= 24) {
-//                String authority = context.getPackageName() + ".FileProvider";
-//                contentUri = FileProvider.getUriForFile(context, authority, new File(filePath));
-//                intent.setDataAndType(contentUri, type);
-//            } else {
-//                contentUri = Uri.fromFile(new File(filePath));
-//                intent.setDataAndType(contentUri, type);
-//            }
-//
-//            context.startActivity(intent);
-//        } catch (Exception var6) {
-//            var6.printStackTrace();
-//            ZFileLog.e("ZFileConfiguration.authority 未设置？？？");
-//            ZFileContent.toast(context, "文件类型可能不匹配或找不到打开该文件类型的程序，打开失败");
-//        }
-//    }
+
+    public static void downloadAndView(DocManagerApplication.Activity activity,DocInfo docInfo) {
+        long docId = docInfo.getId();
+        String savePathDir = activity.getSavePathDir();
+        String savedFileName = docInfo.getName()+"."+ ConvertUtil.TypeConvertToString(docInfo.getType());
+        File file = new File(savePathDir,savedFileName);
+
+        if(!file.exists()) {
+            CosLoader cosLoader = new CosLoader(activity);
+            cosLoader.setResultListener((download,result)->{
+                if(result.equals("success")) {
+                    FileOpenUtil.open(file,docInfo.getType(),activity);
+                }
+            }).download(activity,docInfo.getId(),savePathDir,savedFileName);
+        }
+        else {
+            FileOpenUtil.open(file,docInfo.getType(),activity);
+        }
+    }
+
+    public static void preview(DocManagerApplication.Activity activity,DocInfo docInfo) {
+        long docId = docInfo.getId();
+        String savePathDir = activity.getSavePathDir();
+        String saveTempDir = activity.getTempPathDir();
+        String savedFileName = docInfo.getName()+"."+ ConvertUtil.TypeConvertToString(docInfo.getType());
+        File saveFile = new File(savePathDir,savedFileName);
+        File tempFile = new File(saveTempDir,savedFileName);
+        if(saveFile.exists()){
+            FileOpenUtil.open(saveFile,docInfo.getType(),activity);
+        }else if(tempFile.exists()) {
+            FileOpenUtil.open(tempFile,docInfo.getType(),activity);
+        }else {
+            CosLoader cosLoader = new CosLoader(activity);
+            cosLoader.setResultListener((download,result)->{
+                if(result == "success") {
+                    FileOpenUtil.open(tempFile,docInfo.getType(),activity);
+                }
+                else {
+
+                }
+            }).download(activity,docInfo.getId(),saveTempDir,savedFileName);
+        }
+    }
+    public static boolean isFileDownloaded(DocManagerApplication.Activity activity,DocInfo docInfo) {
+        long docId = docInfo.getId();
+        String savePathDir = activity.getSavePathDir();
+        String savedFileName = docInfo.getName()+"."+ ConvertUtil.TypeConvertToString(docInfo.getType());
+        File file = new File(savePathDir,savedFileName);
+        return file.exists();
+    }
 }
