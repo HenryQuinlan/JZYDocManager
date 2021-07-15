@@ -28,12 +28,13 @@
         android:theme="@style/Theme.JZYDocManager"
         android:usesCleartextTraffic="true"
         tools:ignore="UnusedAttribute">
+        <activity android:name=".ui.login.Register"></activity>
         <activity
             android:name=".ui.search.SearchKeyWordActivity"
-            android:theme="@style/Theme.JZYDocManager.NoActionBar"/>
+            android:theme="@style/Theme.JZYDocManager.NoActionBar" />
         <activity
             android:name=".ui.search.SearchableActivity"
-            android:theme="@style/Theme.JZYDocManager.NoActionBar"/>
+            android:theme="@style/Theme.JZYDocManager.NoActionBar" />
         <activity
             android:name=".ui.classification.ClassificationActivity"
             android:label=""
@@ -51,7 +52,6 @@
             android:name=".MainActivity"
             android:label=""
             android:theme="@style/Theme.JZYDocManager.NoActionBar" />
-
         <activity android:name=".ui.user_center.settings" />
         <activity android:name=".ui.user_center.mUpload" />
         <activity android:name=".ui.user_center.mCollection" />

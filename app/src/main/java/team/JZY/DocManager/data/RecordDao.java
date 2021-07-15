@@ -25,10 +25,10 @@ public interface RecordDao {
     void insert(Record...records);
 
 
-    @Query(value = "SELECT * FROM Record where  OperationType = :OperationType and Operator=:Operator")
+    @Query(value = "SELECT * FROM Record where  OperationType = :OperationType and Operator=:Operator order by id DESC")
     List<Record>findOperation(String Operator,int OperationType);
 
-    @Query(value = "SELECT * FROM Record where  OperationType = :OperationType and Operator=:Operator and docId = :docId")
+    @Query(value = "SELECT * FROM Record where  OperationType = :OperationType and Operator=:Operator and docId = :docId order by id DESC")
     List<Record>findOperation(String Operator,int OperationType,long docId);
 
 
