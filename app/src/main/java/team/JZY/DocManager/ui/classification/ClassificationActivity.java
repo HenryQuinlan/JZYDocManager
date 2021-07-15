@@ -45,7 +45,6 @@ public class ClassificationActivity extends DocManagerApplication.Activity {
         binding = ActivityClassificationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        getSupportActionBar().hide();
 
         recyclerView = binding.classificationRecyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -57,7 +56,7 @@ public class ClassificationActivity extends DocManagerApplication.Activity {
         });
         docInfoRepository  = DocInfoRepository.getInstance(this);
         getData();
-        binding.classificationRefresh.setOnRefreshListener(()->getData());
+        binding.classificationRefresh.setOnRefreshListener(this::getData);
     }
 
     public void getData() {

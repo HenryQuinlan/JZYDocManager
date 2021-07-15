@@ -18,7 +18,7 @@ import team.JZY.DocManager.databinding.ClassificationItemBinding;
 public class ClassificationViewAdapter extends RecyclerView.Adapter<ClassificationViewAdapter.ViewHolder> {
 
 
-    private Context context;
+    private final Context context;
     public ClassificationViewAdapter (Context context) {
         this.context = context;
     }

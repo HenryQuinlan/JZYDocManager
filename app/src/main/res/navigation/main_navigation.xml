@@ -17,9 +17,9 @@
         tools:layout="@layout/classification_fragment" />
     <fragment
         android:id="@+id/local_download_fragment"
-        android:name="team.JZY.DocManager.ui.local_download.LocalDownloadFragment"
+        android:name="team.JZY.DocManager.ui.web_view.WebViewFragment"
         android:label=""
-        tools:layout="@layout/local_download_fragment" />
+        tools:layout="@layout/web_view_fragment" />
     <fragment
         android:id="@+id/user_center_fragment"
         android:name="team.JZY.DocManager.ui.user_center.UserCenterFragment"

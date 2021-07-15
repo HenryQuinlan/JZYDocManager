@@ -4,25 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.classification.ClassificationActivity">
+    tools:context=".ui.search.SearchKeyWordActivity">
+
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/classification_refresh"
+        android:id="@+id/search_key_word_refresh"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/classification_toolbar_layout">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/classification_recycler_view"
+            android:id="@+id/search_key_word_recycler_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/classification_toolbar_layout" />
+            app:layout_constraintTop_toBottomOf="@+id/search_key_word_toolbar_layout" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -18,7 +18,7 @@ public class DocInfoRepository implements DocInfoProvider {
     private static DocInfoRepository INSTANCE;
     private InsertListener mInsertListener;
     private RequestListener mRequestListener;
-
+    private RecommendListener mRecommendListener;
     private DocInfoRepository(){
 
     }
@@ -36,6 +36,11 @@ public class DocInfoRepository implements DocInfoProvider {
     }
     public DocInfoRepository setRequestListener(RequestListener listener) {
         mRequestListener = listener;
+        return this;
+    }
+
+    public DocInfoRepository setRecommendListener(RecommendListener listener) {
+        mRecommendListener = listener;
         return this;
     }
 
@@ -63,7 +68,22 @@ public class DocInfoRepository implements DocInfoProvider {
 
     @Override
     public List<DocInfo> request(String searchKeyWord) {
-        if(mRequestListener != null);
+        new Thread(()->{
+            long size = docInfoDao.getSize();
+            List<DocInfo> result = docInfoDao.request(searchKeyWord);
+            if(mRequestListener != null)mRequestListener.getResponse(result);
+            mRequestListener = null;
+        }).start();
+        return null;
+    }
+
+    @Override
+    public List<String> searchRecommend(String searchKeyWord) {
+        new Thread(()->{
+            List<String> result = docInfoDao.recommend(searchKeyWord);
+            if(mRecommendListener != null)mRecommendListener.getResponse(result);
+            mRecommendListener = null;
+        }).start();
         return null;
     }
 
@@ -92,6 +112,9 @@ public class DocInfoRepository implements DocInfoProvider {
 
     public interface InsertListener {
         public void getResponse(List<Long> docsId);
+    }
+    public interface RecommendListener {
+        public void getResponse(List<String> docsName);
     }
 
 }

@@ -5,6 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,14 +19,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
-import team.JZY.DocManager.data.CosLoader;
-import team.JZY.DocManager.model.DocInfo;
-import team.JZY.DocManager.model.User;
-import team.JZY.DocManager.util.ConvertUtil;
-import team.JZY.DocManager.util.FileOpenUtil;
 
 public class DocManagerApplication extends Application {
     private String loggedInUserName;
+
     public final String getLoggedInUserName() {
         return loggedInUserName;
     }
@@ -50,10 +50,7 @@ public class DocManagerApplication extends Application {
             super.onCreate(savedInstanceState);
             mApplication = ((DocManagerApplication)getApplication());
         }
-        public static void start(Context context) {
-            Intent intent = new Intent(context,MainActivity.class);
-            context.startActivity(intent);
-        }
+
         public final String getLoggedInUserName() {
             return mApplication.loggedInUserName;
         }
@@ -72,13 +69,13 @@ public class DocManagerApplication extends Application {
     }
 
     public static class Fragment extends androidx.fragment.app.Fragment {
-        private DocManagerApplication mApplication;
-        private Activity mActivity;
+        protected DocManagerApplication mApplication;
+        protected Activity mActivity;
 
         @Override
         public void onAttach(@NonNull @NotNull Context context) {
             super.onAttach(context);
-            mActivity = (Activity)getActivity();
+            mActivity = (Activity) requireActivity();
             mApplication = mActivity.mApplication;
         }
 
@@ -95,5 +92,8 @@ public class DocManagerApplication extends Application {
         public final Application getMApplication() {
             return mApplication;
         }
+
     }
+
+
 }

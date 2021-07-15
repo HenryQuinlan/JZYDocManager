@@ -14,7 +14,7 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.JZYDocManager.NoActionBar">
+    <style name="Theme.JZYDocManager.NoActionBar" parent="Theme.JZYDocManager">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>

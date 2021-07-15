@@ -25,6 +25,12 @@ public interface DocInfoDao  {
     @Query("select * from docinfo where classification = :classification order by visits desc limit :amount")
     public List<DocInfo> request(long amount, int classification);
 
+    @Query("select * from docinfo where name like '%'||:searchKeyWord||'%'")
+    public List<DocInfo> request(String searchKeyWord);
+
+    @Query("select name from docinfo where name like '%'||:searchKeyWord||'%'")
+    public List<String> recommend(String searchKeyWord);
+
     @Query("update DocInfo set visits = :docVisits where id = :docId")
     public void update(long docId,long docVisits);
 
@@ -33,6 +39,8 @@ public interface DocInfoDao  {
 
     @Query("delete from docinfo where 1")
     public void deleteAll();
+
+
 //    @Insert(onConflict = OnConflictStrategy.REPLACE)
 //    public Single<List<Long>> insert(List<DocInfo>docsInfo);
 //

@@ -20,21 +20,38 @@
         android:name=".DocManagerApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label=""
         android:preserveLegacyExternalStorage="true"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.JZYDocManager">
-        <activity android:name=".ui.classification.ClassificationActivity"/>
-        <activity android:name=".LoginActivity">
+        android:theme="@style/Theme.JZYDocManager"
+        android:usesCleartextTraffic="true"
+        tools:ignore="UnusedAttribute">
+        <activity
+            android:name=".ui.search.SearchKeyWordActivity"
+            android:theme="@style/Theme.JZYDocManager.NoActionBar"/>
+        <activity
+            android:name=".ui.search.SearchableActivity"
+            android:theme="@style/Theme.JZYDocManager.NoActionBar"/>
+        <activity
+            android:name=".ui.classification.ClassificationActivity"
+            android:label=""
+            android:theme="@style/Theme.JZYDocManager.NoActionBar" />
+        <activity
+            android:name=".LoginActivity"
+            android:label="海量文档管理">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:label=""
+            android:theme="@style/Theme.JZYDocManager.NoActionBar" />
+
         <activity android:name=".ui.user_center.settings" />
         <activity android:name=".ui.user_center.mUpload" />
         <activity android:name=".ui.user_center.mCollection" />

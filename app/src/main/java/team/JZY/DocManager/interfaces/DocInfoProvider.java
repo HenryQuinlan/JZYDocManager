@@ -9,6 +9,7 @@ public interface DocInfoProvider {
     public List<DocInfo> request(long amount);
     public List<DocInfo> request(long amount,int classification);
     public List<DocInfo> request(String searchKeyWord);
+    public List<String> searchRecommend(String searchKeyWord);
     public List<Long> insert(List<DocInfo> docsInfo);
     public void update(long docId,long docVisits);
 

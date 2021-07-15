@@ -1,11 +1,14 @@
 package team.JZY.DocManager;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -23,11 +26,14 @@ import android.widget.PopupWindow;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.kathline.library.common.ZFileManageHelp;
 import com.kathline.library.content.ZFileBean;
 import com.kathline.library.content.ZFileConfiguration;
 import com.kathline.library.content.ZFileContent;
 import com.kathline.library.listener.ZFileListener;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -52,16 +58,17 @@ public class MainActivity extends DocManagerApplication.Activity {
     public static final String PPT = "application/vnd.ms-powerpoint";
     public static final String PPTX = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
     public static final String PDF = "application/pdf";
+
     private ActivityMainBinding binding;
     private UserViewModel userViewModel;
     private DocInfoRepository docInfoRepository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
-        getSupportActionBar().hide();
 
         Intent intent = getIntent();
         String userName = intent.getStringExtra(LOGGED_IN_USER_NAME_KEY);
@@ -86,6 +93,7 @@ public class MainActivity extends DocManagerApplication.Activity {
                 R.id.local_download_fragment,
                 R.id.user_center_fragment)
                 .build();
+        //LaunchSingleTop
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
@@ -106,6 +114,7 @@ public class MainActivity extends DocManagerApplication.Activity {
         popupWindow.setAnimationStyle(R.anim.anim_pop);
         popupWindow.setTouchable(true);
         popupWindow.setTouchInterceptor(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return false;
@@ -123,10 +132,11 @@ public class MainActivity extends DocManagerApplication.Activity {
 
     private void filePick() {
         //TODO MORE_SUPPORT TYPE
-        if(!checkPermission())return;
+        if(Build.VERSION.SDK_INT>=30&&!checkPermission())return;
         final ZFileConfiguration configuration = new ZFileConfiguration.Build()
                 //.resources(resources)
                 .maxLength(9)
+                .maxSize(100)
                 .boxStyle(ZFileConfiguration.STYLE1)
                 .fileFilterArray(Build.VERSION.SDK_INT >= 30 ?
                         new String[]{DOC,DOCX,PPT,PPTX,PDF} :
@@ -208,5 +218,8 @@ public class MainActivity extends DocManagerApplication.Activity {
         return true;
     }
 
-
+    public static void start(Context context) {
+        Intent intent = new Intent(context,MainActivity.class);
+        context.startActivity(intent);
+    }
 }
