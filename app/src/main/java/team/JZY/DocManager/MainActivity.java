@@ -1,14 +1,11 @@
 package team.JZY.DocManager;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
-import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +14,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -27,14 +23,11 @@ import android.widget.PopupWindow;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.kathline.library.common.ZFileManageHelp;
 import com.kathline.library.content.ZFileBean;
 import com.kathline.library.content.ZFileConfiguration;
 import com.kathline.library.content.ZFileContent;
 import com.kathline.library.listener.ZFileListener;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -54,43 +47,42 @@ import team.JZY.DocManager.util.ConvertUtil;
 public class MainActivity extends DocManagerApplication.Activity {
 
 
-//    private static final String LOGGED_IN_USER_NAME_KEY = "loggedInUserNameKey";
-//    private static final int FILE_PICK_REQUEST_CODE = 4399;
+    private static final String LOGGED_IN_USER_NAME_KEY = "loggedInUserNameKey";
+    private static final  int FILE_PICK_REQUEST_CODE = 4399;
     public static final String DOC = "application/msword";
     public static final String DOCX = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
     public static final String PPT = "application/vnd.ms-powerpoint";
     public static final String PPTX = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
     public static final String PDF = "application/pdf";
-
     private ActivityMainBinding binding;
     private UserViewModel userViewModel;
     private DocInfoRepository docInfoRepository;
     private RecordRepository recordRepository;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-//        Intent intent = getIntent();
-//        String userName = intent.getStringExtra(LOGGED_IN_USER_NAME_KEY);
-        User user = new User(getLoggedInUserName());
+        getSupportActionBar().hide();
+
+        Intent intent = getIntent();
+        String userName = intent.getStringExtra(LOGGED_IN_USER_NAME_KEY);
+        User user = new User(userName);
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         userViewModel.setUser(user);
 
         docInfoRepository = DocInfoRepository.getInstance(this);
-        recordRepository = RecordRepository.getInstance(this);
+
         initNavigation();
     }
 
-    private void initNavigation() {
+    private void initNavigation(){
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         MenuItem menuItemUpload = binding.navView.getMenu().findItem(R.id.menu_item_upload);
-        menuItemUpload.setOnMenuItemClickListener(m -> onMenuItemUploadClicked());
+        menuItemUpload.setOnMenuItemClickListener(m-> onMenuItemUploadClicked());
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.homepage_fragment,
                 R.id.classification_fragment,
@@ -102,13 +94,14 @@ public class MainActivity extends DocManagerApplication.Activity {
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
 
-    public boolean onMenuItemUploadClicked() {
+    public boolean onMenuItemUploadClicked()
+    {
         createPopupWindow();
         return false;
     }
 
-    private void createPopupWindow() {
-        UploadPopupwindowBinding popupBinding = UploadPopupwindowBinding.inflate(LayoutInflater.from(this), null, false);
+    private void createPopupWindow(){
+        UploadPopupwindowBinding popupBinding = UploadPopupwindowBinding.inflate(LayoutInflater.from(this),null,false);
 
         final PopupWindow popupWindow = new PopupWindow(popupBinding.getRoot(),
                 400, 350, true);
@@ -116,7 +109,6 @@ public class MainActivity extends DocManagerApplication.Activity {
         popupWindow.setAnimationStyle(R.anim.anim_pop);
         popupWindow.setTouchable(true);
         popupWindow.setTouchInterceptor(new View.OnTouchListener() {
-            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return false;
@@ -126,23 +118,22 @@ public class MainActivity extends DocManagerApplication.Activity {
 
         //设置popupWindow显示的位置，参数依次是参照View，x轴的偏移量，y轴的偏移量
         popupWindow.showAsDropDown(binding.navView, 340, -500);
-        popupBinding.getRoot().setOnClickListener(v -> filePick());
-        popupBinding.buttonUpload.setOnClickListener(v -> filePick());
-        popupBinding.textView.setOnClickListener(v -> filePick());
+        popupBinding.getRoot().setOnClickListener(v->filePick());
+        popupBinding.buttonUpload.setOnClickListener(v->filePick());
+        popupBinding.textView.setOnClickListener(v->filePick());
 
     }
 
     private void filePick() {
         //TODO MORE_SUPPORT TYPE
-        if (Build.VERSION.SDK_INT >= 30 && !checkPermission()) return;
+        if(!checkPermission())return;
         final ZFileConfiguration configuration = new ZFileConfiguration.Build()
                 //.resources(resources)
                 .maxLength(9)
-                .maxSize(200)
                 .boxStyle(ZFileConfiguration.STYLE1)
                 .fileFilterArray(Build.VERSION.SDK_INT >= 30 ?
-                        new String[]{DOC, DOCX, PPT, PPTX, PDF} :
-                        new String[]{"doc", "docx", "ppt", "pptx", "pdf"})
+                        new String[]{DOC,DOCX,PPT,PPTX,PDF} :
+                        new String[]{"doc","docx","ppt","pptx","pdf"})
                 .build();
         ZFileContent.getZFileHelp()
                 .setConfiguration(configuration)
@@ -155,7 +146,7 @@ public class MainActivity extends DocManagerApplication.Activity {
                                 .into(imageView);
                     }
                 });
-        ZFileContent.getZFileHelp().start(this, (requestCode, resultCode, data) -> {
+        ZFileContent.getZFileHelp().start(this,(requestCode,resultCode,data)->{
             List<ZFileBean> fileList = ZFileManageHelp.getInstance().getSelectData(getBaseContext(), requestCode, resultCode, data);
             if (fileList == null || fileList.size() <= 0) {
                 return;
@@ -166,52 +157,50 @@ public class MainActivity extends DocManagerApplication.Activity {
 
     private void uploadAction(List<ZFileBean> fileList) {
 
-        new Thread(() -> {
-            List<DocInfo> docsInfo = new ArrayList<DocInfo>();
-            List<Uri> docsUri = new ArrayList<Uri>();
-            for (ZFileBean file : fileList) {
-                try {
-                    docsInfo.add(ConvertUtil.FileConvertToDocInfo(file));
-                    docsUri.add(Uri.fromFile(new File(file.getFilePath())));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            docInfoRepository.setInsertListener(docsId -> {
-                CosLoader cosLoader = new CosLoader(MainActivity.this);
-                cosLoader.setResultListener((upload, result) -> {
-                    for(int i = 0; i < docsId.size() ; i++) {
-                        recordRepository.insertRecord(
-                                getLoggedInUserName(),
-                                Record.TYPE_UPLOAD,
-                                docsId.get(i),
-                                docsInfo.get(i).getName(),
-                                docsInfo.get(i).getType());
+        new Thread(()-> {
+                List<DocInfo>docsInfo = new ArrayList<DocInfo>();
+                List<Uri>docsUri = new ArrayList<Uri>();
+                for(ZFileBean file:fileList) {
+                    try {
+                        docsInfo.add(ConvertUtil.FileConvertToDocInfo(file));
+                        docsUri.add(Uri.fromFile(new File(file.getFilePath())));
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    //TODO MESSAGE
-                }).upload(this, docsUri, docsId);
-            }).insert(docsInfo);
+                }
+                for(int i=0;i<docsInfo.size();i++){
+                    recordRepository.insertRecord(userViewModel.getUser().getName(),Record.TYPE_UPLOAD,docsInfo.get(i).getId());
+                }
+
+               docInfoRepository.setInsertListener(docsId ->{
+                            CosLoader cosLoader = new CosLoader(MainActivity.this);
+                            cosLoader.setResultListener((upload,result)->{
+
+                            }).upload(this,docsUri,docsId);
+               }).insert(docsInfo);
 
         }).start();
 
     }
 
-    public boolean checkPermission() {
-        if (!Environment.isExternalStorageManager()) {
+    public boolean checkPermission()
+    {
+        if(!Environment.isExternalStorageManager()) {
             String message = String.format("您拒绝了相关权限，无法正常使用上传功能。请前往 设置->应用管理->%s->权限管理中启用权限", getString(R.string.app_name));
 
             AlertDialog alertDialog = (new AlertDialog.Builder(this)).
                     setTitle("权限被禁用").
                     setMessage(message).
                     setCancelable(false).
-                    setNegativeButton("返回", (d, w) -> {
-                    }).
-                    setPositiveButton("去设置", (d, w) -> {
+                    setNegativeButton("返回", (d,w)->{}).
+                    setPositiveButton("去设置",(d,w)-> {
                                 Intent intent;
                                 if (Build.VERSION.SDK_INT >= 30) {
                                     intent = new Intent("android.settings.MANAGE_APP_ALL_FILES_ACCESS_PERMISSION");
                                     intent.setData(Uri.parse("package:" + getPackageName()));
-                                } else {
+                                }
+
+                                else {
                                     intent = new Intent("android.settings.APPLICATION_DETAILS_SETTINGS");
                                     intent.setData(Uri.parse("package:" + getPackageName()));
                                 }
@@ -225,8 +214,5 @@ public class MainActivity extends DocManagerApplication.Activity {
         return true;
     }
 
-    public static void start(Context context) {
-        Intent intent = new Intent(context, MainActivity.class);
-        context.startActivity(intent);
-    }
+
 }

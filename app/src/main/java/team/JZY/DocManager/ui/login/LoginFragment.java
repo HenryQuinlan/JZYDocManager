@@ -16,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -25,10 +27,12 @@ import team.JZY.DocManager.MainActivity;
 import team.JZY.DocManager.R;
 import team.JZY.DocManager.data.DocManagerDataBase;
 import team.JZY.DocManager.data.UserDao;
+import team.JZY.DocManager.data.UserRepository;
 import team.JZY.DocManager.databinding.LoginFragmentBinding;
 import team.JZY.DocManager.ui.UserViewModel;
 
 public class LoginFragment extends DocManagerApplication.Fragment {
+    private UserRepository userRepository =UserRepository.getInstance();
 
     private LoginViewModel loginViewModel;
     private LoginFragmentBinding binding;
@@ -45,11 +49,17 @@ public class LoginFragment extends DocManagerApplication.Fragment {
         // Inflate the layout for this fragment
         binding = LoginFragmentBinding.inflate(inflater, container, false);
         binding.buttonLogin.setOnClickListener(v->onButtonLoginClicked());
-       // binding.buttonRegister.setOnClickListener(v ->onButtonRegisterClicked() );
+
+        binding.buttonRegister.setOnClickListener(v ->onButtonRegisterClicked());
         return binding.getRoot();
     }
 
-   // private void onButtonRegisterClicked() {
+    private void onButtonRegisterClicked() {
+        Intent intent=new Intent(requireActivity(),Register.class);
+        startActivity(intent);
+    }
+
+    // private void onButtonRegisterClicked() {
 //        userDao
 //    }
 
@@ -79,6 +89,12 @@ public class LoginFragment extends DocManagerApplication.Fragment {
     public void onButtonLoginClicked() {
         String name = binding.textName.getText().toString();
         String password = binding.textPassword.getText().toString();
-        loginViewModel.login(name,password);
+//        String tips=new String();
+//        userRepository.setStringListener(tips-> getMActivity().runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Snackbar.make(v,tips,Snackbar.LENGTH_SHORT).show();
+//            }
+//        })).login(name,password);
     }
 }
