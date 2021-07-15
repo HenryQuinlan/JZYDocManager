@@ -34,9 +34,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import team.JZY.DocManager.data.DocInfoRepository;
+import team.JZY.DocManager.data.RecordRepository;
 import team.JZY.DocManager.databinding.ActivityMainBinding;
 import team.JZY.DocManager.databinding.UploadPopupwindowBinding;
 import team.JZY.DocManager.model.DocInfo;
+import team.JZY.DocManager.model.Record;
 import team.JZY.DocManager.model.User;
 import team.JZY.DocManager.ui.UserViewModel;
 import team.JZY.DocManager.data.CosLoader;
@@ -55,6 +57,7 @@ public class MainActivity extends DocManagerApplication.Activity {
     private ActivityMainBinding binding;
     private UserViewModel userViewModel;
     private DocInfoRepository docInfoRepository;
+    private RecordRepository recordRepository;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -165,7 +168,10 @@ public class MainActivity extends DocManagerApplication.Activity {
                         e.printStackTrace();
                     }
                 }
-                //TODO USER
+                for(int i=0;i<docsInfo.size();i++){
+                    recordRepository.insertRecord(userViewModel.getUser().getName(),Record.TYPE_UPLOAD,docsInfo.get(i).getId());
+                }
+
                docInfoRepository.setInsertListener(docsId ->{
                             CosLoader cosLoader = new CosLoader(MainActivity.this);
                             cosLoader.setResultListener((upload,result)->{
