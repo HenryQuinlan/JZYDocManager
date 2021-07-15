@@ -5,6 +5,7 @@
     <string name="navigation_title_local_download">本地</string>
     <string name="navigation_title_user_center">我的</string>
     <string name="button_login">登 录</string>
+    <string name="button_register">注 册</string>
     <string name="jzy_docManager_shared_preference_key">JZYDocManagerSharedPreferenceKey</string>
     <string name="upload">上传</string>
     <string name="text_enter_title">请输入文档标题</string>
