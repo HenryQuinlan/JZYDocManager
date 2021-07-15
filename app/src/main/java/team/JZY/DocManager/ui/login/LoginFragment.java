@@ -23,11 +23,13 @@ import java.util.Objects;
 import team.JZY.DocManager.DocManagerApplication;
 import team.JZY.DocManager.MainActivity;
 import team.JZY.DocManager.R;
+import team.JZY.DocManager.data.DocManagerDataBase;
+import team.JZY.DocManager.data.UserDao;
 import team.JZY.DocManager.databinding.LoginFragmentBinding;
 import team.JZY.DocManager.ui.UserViewModel;
 
 public class LoginFragment extends DocManagerApplication.Fragment {
-
+    private UserDao userDao
     private LoginViewModel loginViewModel;
     private LoginFragmentBinding binding;
     public LoginFragment() {
@@ -43,7 +45,12 @@ public class LoginFragment extends DocManagerApplication.Fragment {
         // Inflate the layout for this fragment
         binding = LoginFragmentBinding.inflate(inflater, container, false);
         binding.buttonLogin.setOnClickListener(v->onButtonLoginClicked());
+        binding.buttonRegister.setOnClickListener(v ->onButtonRegisterClicked() );
         return binding.getRoot();
+    }
+
+    private void onButtonRegisterClicked() {
+        userDao
     }
 
     @Override

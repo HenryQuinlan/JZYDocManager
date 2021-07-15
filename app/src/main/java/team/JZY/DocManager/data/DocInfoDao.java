@@ -39,8 +39,6 @@ public interface DocInfoDao  {
 
     @Query("delete from docinfo where 1")
     public void deleteAll();
-
-
 //    @Insert(onConflict = OnConflictStrategy.REPLACE)
 //    public Single<List<Long>> insert(List<DocInfo>docsInfo);
 //

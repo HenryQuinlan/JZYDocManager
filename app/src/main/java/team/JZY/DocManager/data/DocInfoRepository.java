@@ -104,8 +104,6 @@ public class DocInfoRepository implements DocInfoProvider {
         }).start();
     }
 
-
-
     public interface RequestListener {
         public void getResponse(List<DocInfo> docsInfo);
     }

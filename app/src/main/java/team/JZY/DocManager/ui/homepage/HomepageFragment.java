@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import android.view.ViewGroup;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import team.JZY.DocManager.DocManagerApplication;
@@ -44,6 +46,7 @@ public class HomepageFragment extends DocManagerApplication.Fragment {
     private UserViewModel userViewModel;
     private HomepageFragmentBinding binding;
     private static HomepageFragmentBinding bindingRecord;
+    private RecyclerView recyclerView;
     private DocInfoViewAdapter docInfoViewAdapter;
     private DocInfoRepository docInfoRepository;
 
