@@ -19,7 +19,7 @@ import team.JZY.DocManager.databinding.HomepageFragmentBinding;
 import team.JZY.DocManager.model.DocInfo;
 import team.JZY.DocManager.ui.DocInfoViewModel;
 import team.JZY.DocManager.ui.UserViewModel;
-import team.JZY.DocManager.ui.homepage.DocInfoViewAdapter;
+import team.JZY.DocManager.ui.DocInfoViewAdapter;
 
 public class ClassificationActivity extends DocManagerApplication.Activity {
 

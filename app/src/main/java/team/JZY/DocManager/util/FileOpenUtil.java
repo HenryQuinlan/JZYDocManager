@@ -90,7 +90,7 @@ public class FileOpenUtil {
         }else {
             CosLoader cosLoader = new CosLoader(activity);
             cosLoader.setResultListener((download,result)->{
-                if(result == "success") {
+                if(result.equals("success")) {
                     FileOpenUtil.open(tempFile,docInfo.getType(),activity);
                 }
                 else {

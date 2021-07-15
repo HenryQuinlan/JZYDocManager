@@ -6,7 +6,7 @@ import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 
 public class LoginViewModel extends ViewModel {
-    // TODO: Implement the ViewModel
+
     public static final String SAVE_LOGGED_IN_STATE_KEY = "SavedLoggedInStateKey";
     private MutableLiveData<String> loggedInUserName;
 

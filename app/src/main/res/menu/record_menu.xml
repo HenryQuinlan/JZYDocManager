@@ -3,21 +3,17 @@
 
     <item
         android:id="@+id/open_file"
-        android:icon="@drawable/ic_home_black_24dp"
         android:title="打开文件" />
 
     <item
         android:id="@+id/favourite"
-        android:icon="@drawable/ic_home_black_24dp"
         android:title="添加收藏" />
 
     <item
         android:id="@+id/download"
-        android:icon="@drawable/ic_home_black_24dp"
         android:title="下载文件"/>
 
     <item
         android:id="@+id/delete"
-        android:icon="@drawable/ic_home_black_24dp"
         android:title="删除记录" />
 </menu>

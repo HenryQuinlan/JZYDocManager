@@ -35,7 +35,7 @@ import team.JZY.DocManager.ui.UserViewModel;
  * create an instance of this fragment.
  */
 public class WebViewFragment extends DocManagerApplication.Fragment {
-    //TODO UNKNOWN MAYBE WEBVIEW? OR LOCAL DOC MANAGER OR  JUST LOCAL DOWNLOAD
+
     private WebViewFragmentBinding binding;
     private static WebViewFragmentBinding bindingRecord;
     private UserViewModel userViewModel;
@@ -51,18 +51,18 @@ public class WebViewFragment extends DocManagerApplication.Fragment {
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        if(bindingRecord == null) {
+       // if(bindingRecord == null) {
             binding = WebViewFragmentBinding.inflate(inflater,container,false);
             initWebView();
-            bindingRecord = binding;
-        }
-        else {
-            binding = bindingRecord;
-        }
-        ViewGroup parent = (ViewGroup)binding.getRoot().getParent();
-        if(parent != null) {
-            parent.removeView(binding.getRoot());
-        }
+//            bindingRecord = binding;
+//        }
+//        else {
+//            binding = bindingRecord;
+//        }
+//        ViewGroup parent = (ViewGroup)binding.getRoot().getParent();
+//        if(parent != null) {
+//            parent.removeView(binding.getRoot());
+//        }
         return binding.getRoot();
     }
 

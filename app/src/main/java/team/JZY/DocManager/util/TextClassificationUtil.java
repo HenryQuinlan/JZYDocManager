@@ -113,8 +113,6 @@ public class TextClassificationUtil {
                     String firstClassName = Class.optString("FirstClassName");
                     String secondClassName = Class.optString("SecondClassName");
                     ClassName className = new ClassName(firstClassName,"*");
-                    Log.d("ddddddd", firstClassName);
-                    Log.d("eeeeee", secondClassName);
 
                     if(map.containsKey(className))
                         return map.get(className);

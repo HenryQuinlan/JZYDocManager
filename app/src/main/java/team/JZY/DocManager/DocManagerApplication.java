@@ -69,8 +69,8 @@ public class DocManagerApplication extends Application {
     }
 
     public static class Fragment extends androidx.fragment.app.Fragment {
-        protected DocManagerApplication mApplication;
-        protected Activity mActivity;
+        private DocManagerApplication mApplication;
+        private Activity mActivity;
 
         @Override
         public void onAttach(@NonNull @NotNull Context context) {

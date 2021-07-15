@@ -48,7 +48,7 @@ public class ClassificationFragment extends DocManagerApplication.Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        if(bindingRecord == null) {
+        //if(bindingRecord == null) {
             binding = ClassificationFragmentBinding.inflate(inflater, container, false);
             RecyclerView recyclerView = binding.classificationRecyclerView;
             recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
@@ -56,15 +56,15 @@ public class ClassificationFragment extends DocManagerApplication.Fragment {
             userViewModel = new ViewModelProvider(getMActivity()).get(UserViewModel.class);
             ClassificationViewAdapter adapter = new ClassificationViewAdapter(requireContext());
             recyclerView.setAdapter(adapter);
-            bindingRecord = binding;
-        }
-        else {
-            binding = bindingRecord;
-        }
-        ViewGroup parent = (ViewGroup)binding.getRoot().getParent();
-        if(parent != null) {
-            parent.removeView(binding.getRoot());
-        }
+//            bindingRecord = binding;
+//        }
+//        else {
+//            binding = bindingRecord;
+//        }
+//        ViewGroup parent = (ViewGroup)binding.getRoot().getParent();
+//        if(parent != null) {
+//            parent.removeView(binding.getRoot());
+//        }
         return binding.getRoot();
     }
 

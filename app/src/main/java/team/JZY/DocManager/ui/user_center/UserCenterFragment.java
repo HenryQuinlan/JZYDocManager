@@ -15,6 +15,7 @@ import android.widget.Button;
 
 import org.jetbrains.annotations.NotNull;
 
+import team.JZY.DocManager.DocManagerApplication;
 import team.JZY.DocManager.R;
 import team.JZY.DocManager.databinding.UserCenterFragmentBinding;
 import team.JZY.DocManager.ui.UserViewModel;
@@ -24,7 +25,7 @@ import team.JZY.DocManager.ui.UserViewModel;
  * Use the {@link UserCenterFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UserCenterFragment extends Fragment {
+public class UserCenterFragment extends DocManagerApplication.Fragment {
 
     private UserViewModel userViewModel;
     private UserCenterFragmentBinding binding;
@@ -44,6 +45,7 @@ public class UserCenterFragment extends Fragment {
         binding = UserCenterFragmentBinding.inflate(inflater, container, false);
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
 
+        binding.userNameText.setText(getLoggedInUserName());
         binding.myCollectionLayout.setOnClickListener(v ->onCollectionClicked());
         binding.myDownloadLayout.setOnClickListener(v -> onDownloadClicked());
         binding.myUploadLayout.setOnClickListener(v -> onUploadClicked());

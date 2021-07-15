@@ -38,10 +38,10 @@ public class RecordRepository implements UserRecorder {
         return this;
     }
 
-    public void insertRecord(String username,int operation,long DocID) {
+    public void insertRecord(String username,int operation,long docId,String docName,int docType) {
         new Thread(()->{
             //可能重写
-            Record record=new Record(username,operation,DocID,"1",1);
+            Record record=new Record(username,operation,docId,docName,docType);
             recordDao.insert(record);
         }).start();
     }
@@ -91,11 +91,20 @@ public class RecordRepository implements UserRecorder {
     }
 
     @Override
-    public void deleteRecord(String UserName, int operationType,long DocID) {
+    public List<Record> checkRecord(String UserName, int operationType, long docId) {
         new Thread(()->{
-            Record record=new Record(UserName,operationType,DocID,"1",1);
-            record.setId(DocID);
-            recordDao.deleteOperation(record);
+            List<Record> records = recordDao.findOperation(UserName,operationType,docId);
+            if(mListener == null)return;
+            mListener.receive(records);
+            mListener = null;
+        }).start();
+        return null;
+    }
+
+    @Override
+    public void deleteRecord(Record... records) {
+        new Thread(()->{
+            recordDao.deleteOperation(records);
             if(mListener==null)return;
             mListener=null;
         }).start();

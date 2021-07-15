@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import team.JZY.DocManager.model.DocInfo;
+import team.JZY.DocManager.model.Record;
 
 public class ConvertUtil {
 //    Map<String,Integer>classificationMap;
@@ -76,7 +77,6 @@ public class ConvertUtil {
     public static DocInfo FileConvertToDocInfo(ZFileBean file) throws Exception {
         int nameStartIndex=file.getFileName().lastIndexOf(File.separatorChar)+1;
         String fileName = file.getFileName().substring(nameStartIndex);
-        Log.d("SLDJDK", fileName);
         int preIndex = fileName.lastIndexOf(".") + 1;
         int lastIndex = fileName.length();
         int type = StringConvertToType(fileName.substring(preIndex, lastIndex));
@@ -85,5 +85,10 @@ public class ConvertUtil {
         int visits = 0;
         int classification = TextClassificationUtil.getInstance().getClassification(name);
         return new DocInfo(name,type,classification,visits,size);
+    }
+    public static DocInfo RecordConvertToDocInfo(Record record) {
+        DocInfo docInfo = new DocInfo(record.getDocName(), record.getDocType(),0,0,"");
+        docInfo.setId(record.getDocID());
+        return docInfo;
     }
 }

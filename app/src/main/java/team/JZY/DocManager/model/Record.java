@@ -1,19 +1,23 @@
 package team.JZY.DocManager.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(primaryKeys = {"Operator" , "OperationType" , "DocID"})
 public class Record {
-    @PrimaryKey(autoGenerate = true)
-    private long id;
+
+    @NonNull
     @ColumnInfo(name="Operator")
     private String Operator;
+
+    @NonNull
     @ColumnInfo(name="OperationType")
     private int OperationType;
 
+    @NonNull
     @ColumnInfo(name="DocID")
     private long DocID;
     @ColumnInfo(name="DocName")
@@ -40,20 +44,7 @@ public class Record {
         DocName = docName;
         DocType = docType;
     }
-//    public Record(String operator, int operationType, long docID) {
-//        this.Operator = operator;
-//        this.OperationType = operationType;
-//        this.DocID = docID;
-//    }
 
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getOperator() {
         return Operator;

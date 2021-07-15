@@ -1,43 +1,54 @@
-package team.JZY.DocManager.ui.homepage;
+package team.JZY.DocManager.ui;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.util.List;
+import java.util.Objects;
 
-import team.JZY.DocManager.MainActivity;
+import team.JZY.DocManager.DocManagerApplication;
 import team.JZY.DocManager.R;
-import team.JZY.DocManager.data.CosLoader;
+import team.JZY.DocManager.data.DocInfoRepository;
+import team.JZY.DocManager.data.RecordRepository;
 import team.JZY.DocManager.databinding.DocInfoItemBinding;
 import team.JZY.DocManager.model.DocInfo;
-import team.JZY.DocManager.util.ConvertUtil;
+import team.JZY.DocManager.model.Record;
 import team.JZY.DocManager.util.FileOpenUtil;
 
 public class DocInfoViewAdapter extends RecyclerView.Adapter<DocInfoViewAdapter.ViewHolder> {
 
-    private Context context;
-    private List<DocInfo> docsInfo;
+    private DocManagerApplication.Activity activity;
+    private RecordRepository recordRepository;
+    private DocInfoRepository docInfoRepository;
+    private LiveData<List<DocInfo>> liveDocsInfo;
     private static final int[] DOC_TYPE_IMAGE_SOURCE = {
             R.drawable.ic_doctype_doc,
             R.drawable.ic_doctype_doc,
             R.drawable.ic_doctype_ppt,
             R.drawable.ic_doctype_ppt,
             R.drawable.ic_doctype_pdf};
+    private static final int[] DOC_FAVORITE_IMAGE_SOURCE = {
+            R.drawable.ic_toolbar_favorite_normal,
+            R.drawable.ic_toolbar_favorite_on
+    };
     private static final String TextDocInfoVisitsPrefix = "浏览量：";
     private static final String TextDocInfoSizePrefix = "大小：";
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private DocInfoItemBinding binding;
+        boolean isFavorite;
 //        private ImageView docTypeView;
 //        private ImageButton downloadButton;
 //        private ImageButton favoriteButton;
@@ -52,9 +63,12 @@ public class DocInfoViewAdapter extends RecyclerView.Adapter<DocInfoViewAdapter.
 //            nameText = (TextView)itemView.findViewById(R.id.doc_info_name_text);
         }
     }
-    public DocInfoViewAdapter(Context context,List<DocInfo> docsInfo) {
-        this.context = context;
-        this.docsInfo = docsInfo;
+    public DocInfoViewAdapter(DocManagerApplication.Activity activity,LiveData<List<DocInfo>> liveDocsInfo) {
+        this.activity = activity;
+        Log.d("NNNNN", activity==null?"a":"b");
+        this.liveDocsInfo = liveDocsInfo;
+        this.recordRepository = RecordRepository.getInstance(activity);
+        this.docInfoRepository = DocInfoRepository.getInstance(activity);
     }
 
     @NonNull
@@ -69,7 +83,7 @@ public class DocInfoViewAdapter extends RecyclerView.Adapter<DocInfoViewAdapter.
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
-        DocInfo docInfo = docsInfo.get(position);
+        DocInfo docInfo = liveDocsInfo.getValue().get(position);
         holder.binding.docInfoNameText.setText(docInfo.getName());
         holder.binding.docInfoVisitsAndSizeText.setText(
                 TextDocInfoVisitsPrefix+docInfo.getVisits()+"  "+
@@ -77,68 +91,76 @@ public class DocInfoViewAdapter extends RecyclerView.Adapter<DocInfoViewAdapter.
         holder.binding.docInfoTypeView.setImageResource(
                 DOC_TYPE_IMAGE_SOURCE[docInfo.getType()]
         );
-        //TODO USER
-        holder.binding.docInfoDownloadButton.setOnClickListener(v -> {
-            onDownloadClicked(docsInfo.get(holder.getAdapterPosition()));
-        });
+
+        if(FileOpenUtil.isFileDownloaded(activity,docInfo)) {
+            holder.binding.docInfoDownloadButton.setImageResource(R.drawable.ic_toolbar_download_pressed_disable);
+        }
+        else {
+            holder.binding.docInfoDownloadButton.setImageResource(R.drawable.ic_toolbar_download);
+            holder.binding.docInfoDownloadButton.setOnClickListener(v -> {
+                onDownloadClicked(liveDocsInfo.getValue().get(holder.getAdapterPosition()));
+                holder.binding.docInfoDownloadButton.setImageResource(R.drawable.ic_toolbar_download_pressed_disable);
+            });
+        }
+
+        recordRepository.setonRecordReceivedListener(records -> {
+            holder.isFavorite = records != null && !records.isEmpty();
+            holder.binding.docInfoFavorieButton.setImageResource(DOC_FAVORITE_IMAGE_SOURCE[holder.isFavorite?1:0]);
+        }).checkRecord(activity.getLoggedInUserName(),Record.TYPE_FAVORITE,docInfo.getId());
         holder.binding.getRoot().setOnClickListener(v -> {
-            onVisitClicked(docsInfo.get(holder.getAdapterPosition()));
+            onVisitClicked(liveDocsInfo.getValue().get(holder.getAdapterPosition()));
         });
         holder.binding.docInfoFavorieButton.setOnClickListener( v -> {
-
+            onFavoriteClicked(liveDocsInfo.getValue().get(holder.getAdapterPosition()),holder.isFavorite);
+            holder.isFavorite = !(holder.isFavorite);
+            holder.binding.docInfoFavorieButton.setImageResource(DOC_FAVORITE_IMAGE_SOURCE[holder.isFavorite?1:0]);
         });
     }
+
+
 
     @Override
     public int getItemCount() {
-        return docsInfo.size();
+        return Objects.requireNonNull(liveDocsInfo.getValue()).size();
     }
 
     private void onDownloadClicked(DocInfo docInfo) {
-        long docId = docInfo.getId();
-        String savePathDir = ((MainActivity)context).getSavePathDir();
-        String savedFileName = docInfo.getName()+"."+ ConvertUtil.TypeConvertToString(docInfo.getType());
-        File file = new File(savePathDir,savedFileName);
-
-        if(!file.exists()) {
-            CosLoader cosLoader = new CosLoader(context);
-            cosLoader.setResultListener((download,result)->{
-
-                if(result.equals("success")) {
-                    FileOpenUtil.open(file,docInfo.getType(),context);
-                }
-            }).download(context,docInfo.getId(),savePathDir,savedFileName);
-        }
-        else {
-            if(context instanceof MainActivity)
-
-            FileOpenUtil.open(file,docInfo.getType(),context);
-        }
-
+        FileOpenUtil.downloadAndView(activity,docInfo);
+        recordRepository.insertRecord(
+                activity.getLoggedInUserName(),
+                Record.TYPE_DOWNLOAD,
+                docInfo.getId(),
+                docInfo.getName(),
+                docInfo.getType());
     }
     private void onVisitClicked(DocInfo docInfo) {
-        long docId = docInfo.getId();
-        String savePathDir = ((MainActivity)context).getSavePathDir();
-        String saveTempDir = ((MainActivity)context).getTempPathDir();
-        String savedFileName = docInfo.getName()+"."+ ConvertUtil.TypeConvertToString(docInfo.getType());
-        File saveFile = new File(savePathDir,savedFileName);
-        File tempFile = new File(saveTempDir,savedFileName);
-        if(saveFile.exists()){
-            FileOpenUtil.open(saveFile,docInfo.getType(),context);
-        }else if(tempFile.exists()) {
-            FileOpenUtil.open(tempFile,docInfo.getType(),context);
-        }else {
-            CosLoader cosLoader = new CosLoader(context);
-            cosLoader.setResultListener((download,result)->{
-                if(result == "success") {
-                    FileOpenUtil.open(tempFile,docInfo.getType(),context);
+        FileOpenUtil.preview(activity,docInfo);
+        docInfoRepository.update(docInfo.getId(),docInfo.getVisits()+1);
+        recordRepository.insertRecord(
+                activity.getLoggedInUserName(),
+                Record.TYPE_VISIT,
+                docInfo.getId(),
+                docInfo.getName(),
+                docInfo.getType());
+    }
 
-                }
-                else {
-
-                }
-            }).download(context,docInfo.getId(),saveTempDir,savedFileName);
+    private void onFavoriteClicked(DocInfo docInfo, boolean isFavorite) {
+        if(isFavorite) {
+            recordRepository.deleteRecord(new Record(
+                    activity.getLoggedInUserName(),
+                    Record.TYPE_FAVORITE,
+                    docInfo.getId(),
+                    docInfo.getName(),
+                    docInfo.getType()
+            ));
         }
-       // ToastUtil.Toast(context,"heiheihei");
+        else {
+                recordRepository.insertRecord(
+                        activity.getLoggedInUserName(),
+                        Record.TYPE_FAVORITE,
+                        docInfo.getId(),
+                        docInfo.getName(),
+                        docInfo.getType());
+        }
     }
 }

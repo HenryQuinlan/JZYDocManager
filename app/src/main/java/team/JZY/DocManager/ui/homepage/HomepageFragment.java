@@ -61,7 +61,7 @@ public class HomepageFragment extends DocManagerApplication.Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        if(bindingRecord == null) {
+//        if(bindingRecord == null) {
             binding = HomepageFragmentBinding.inflate(inflater, container, false);
             RecyclerView recyclerView = binding.homepageRecyclerView;
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -78,15 +78,15 @@ public class HomepageFragment extends DocManagerApplication.Fragment {
             docInfoRepository  = DocInfoRepository.getInstance(requireActivity());
             getData();
             binding.homepageRefresh.setOnRefreshListener(this::getData);
-            bindingRecord = binding;
-        }
-        else {
-            binding =  bindingRecord;
-        }
-        ViewGroup parent = (ViewGroup)(binding).getRoot().getParent();
-        if(parent != null) {
-            parent.removeView(binding.getRoot());
-        }
+//            bindingRecord = binding;
+//        }
+//        else {
+//            binding =  bindingRecord;
+//        }
+//        ViewGroup parent = (ViewGroup)(binding).getRoot().getParent();
+//        if(parent != null) {
+//            parent.removeView(binding.getRoot());
+//        }
         return binding.getRoot();
     }
 

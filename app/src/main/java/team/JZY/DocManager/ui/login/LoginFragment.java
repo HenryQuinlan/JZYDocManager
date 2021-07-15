@@ -29,7 +29,7 @@ import team.JZY.DocManager.databinding.LoginFragmentBinding;
 import team.JZY.DocManager.ui.UserViewModel;
 
 public class LoginFragment extends DocManagerApplication.Fragment {
-    private UserDao userDao
+
     private LoginViewModel loginViewModel;
     private LoginFragmentBinding binding;
     public LoginFragment() {
@@ -45,13 +45,13 @@ public class LoginFragment extends DocManagerApplication.Fragment {
         // Inflate the layout for this fragment
         binding = LoginFragmentBinding.inflate(inflater, container, false);
         binding.buttonLogin.setOnClickListener(v->onButtonLoginClicked());
-        binding.buttonRegister.setOnClickListener(v ->onButtonRegisterClicked() );
+       // binding.buttonRegister.setOnClickListener(v ->onButtonRegisterClicked() );
         return binding.getRoot();
     }
 
-    private void onButtonRegisterClicked() {
-        userDao
-    }
+   // private void onButtonRegisterClicked() {
+//        userDao
+//    }
 
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -65,6 +65,7 @@ public class LoginFragment extends DocManagerApplication.Fragment {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString(LoginViewModel.SAVE_LOGGED_IN_STATE_KEY, loggedInUserName);
                 editor.apply();
+                setLoggedInUserName(loggedInUserName);
                 MainActivity.start(getContext());
                 requireActivity().finish();
             }
@@ -72,7 +73,6 @@ public class LoginFragment extends DocManagerApplication.Fragment {
         SharedPreferences sharedPref = requireContext().getSharedPreferences(getString(R.string.jzy_docManager_shared_preference_key), Context.MODE_PRIVATE);
         String name = sharedPref.getString(LoginViewModel.SAVE_LOGGED_IN_STATE_KEY,null);
         loginViewModel.setLoggedInUserName(name);
-        setLoggedInUserName(name);
     }
 
 

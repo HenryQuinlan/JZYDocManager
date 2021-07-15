@@ -1,5 +1,6 @@
 package team.JZY.DocManager.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -12,6 +13,7 @@ public class User {
         this.name=name;
     }
     @PrimaryKey(autoGenerate = false)
+    @NonNull
     private String name;
     public String getName(){
         return name;
@@ -27,5 +29,6 @@ public class User {
     public void setPassword(String password){
         this.password =password;
     }
+
 }
 

@@ -51,7 +51,6 @@ public class UserRepository implements UserIdentification {
     @Override
     public void register(String name, String password) {
         new Thread(()->{User user=new User(name);
-        for
             user.setPassword(password);
             if(mListener==null)return;
             userDao.insert(user);
@@ -65,7 +64,6 @@ public class UserRepository implements UserIdentification {
     }
     public interface booleanListener{
         public void receive(boolean b);
-
 
     }
 }
