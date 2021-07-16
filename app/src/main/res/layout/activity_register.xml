@@ -8,75 +8,64 @@
 
     <TextView
         android:id="@+id/label_name"
-        android:layout_width="80dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginLeft="28dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="120dp"
         android:gravity="center_vertical"
         android:text="用户名："
         android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/text_name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/text_name"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <EditText
         android:id="@+id/text_password"
-        android:layout_width="264dp"
-        android:layout_height="25dp"
+        android:layout_width="220dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="44dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="30dp"
         android:background="@null"
         android:ems="10"
         android:hint="请输入密码"
         android:inputType="textMultiLine|text|textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/label_password"
         app:layout_constraintTop_toBottomOf="@+id/text_name" />
 
     <TextView
         android:id="@+id/label_password"
-        android:layout_width="80dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginLeft="28dp"
+        android:layout_width="60dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="32dp"
         android:gravity="center_vertical"
         android:text="密码："
         android:textSize="18sp"
         android:verticalScrollbarPosition="defaultPosition"
-        app:layout_constraintBottom_toBottomOf="@+id/text_password"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/text_password"
-        app:layout_constraintVertical_bias="1.0" />
-
+        app:layout_constraintTop_toBottomOf="@+id/label_name" />
 
     <Button
         android:id="@+id/button_register1"
-        android:layout_width="0dp"
+        android:layout_width="88dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="163dp"
-        android:layout_marginTop="172dp"
-        android:layout_marginEnd="160dp"
+        android:layout_marginTop="91dp"
         android:background="#fff125"
         android:text="@string/button_register"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_password" />
+        app:layout_constraintTop_toBottomOf="@+id/text_confirm_password" />
 
     <EditText
         android:id="@+id/text_name"
-        android:layout_width="264dp"
-        android:layout_height="23dp"
-        android:layout_marginTop="124dp"
-        android:layout_marginEnd="30dp"
+        android:layout_width="207dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="116dp"
         android:background="@null"
         android:ems="10"
         android:hint="请输入用户名"
         android:inputType="textMultiLine|textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/label_name"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -84,28 +73,25 @@
         android:id="@+id/confirm_password"
         android:layout_width="96dp"
         android:layout_height="23dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="32dp"
         android:gravity="center_vertical"
         android:text="确认密码："
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/text_confirm_password"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label_password" />
 
     <EditText
         android:id="@+id/text_confirm_password"
-        android:layout_width="263dp"
-        android:layout_height="22dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="30dp"
+        android:layout_width="230dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="28dp"
         android:background="@null"
         android:ems="10"
         android:hint="请再次输入密码"
         android:inputType="textMultiLine|text|textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/label_password"
+        app:layout_constraintStart_toEndOf="@+id/confirm_password"
         app:layout_constraintTop_toBottomOf="@+id/text_password" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -44,7 +44,7 @@ public class RecordRepository implements UserRecorder {
         mOverListener = listener;
         return this;
     }
-
+    @Override
     public void insertRecord(String username,int operation,long docId,String docName,int docType) {
         new Thread(()->{
             //可能重写
@@ -90,7 +90,6 @@ public class RecordRepository implements UserRecorder {
     public List<Record> getFavoriteRecord(String UserName) {
         new Thread(()->{
             List<Record> records=recordDao.findOperation(UserName,Record.TYPE_FAVORITE);
-            Log.d("ZZZZ", mListener==null?"0":"1");
             if(mListener==null)return;
             mListener.receive(records);
             mListener=null;
@@ -98,7 +97,6 @@ public class RecordRepository implements UserRecorder {
         return null;
     }
 
-    @Override
     public List<Record> checkRecord(String UserName, int operationType, long docId) {
         new Thread(()->{
             List<Record> records = recordDao.findOperation(UserName,operationType,docId);

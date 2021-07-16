@@ -9,11 +9,9 @@ import team.JZY.DocManager.data.UserRepository;
 import team.JZY.DocManager.model.User;
 
 public class LoginViewModel extends ViewModel {
-    private UserRepository userRepository=UserRepository.getInstance();
 
     public static final String SAVE_LOGGED_IN_STATE_KEY = "SavedLoggedInStateKey";
     private MutableLiveData<String> loggedInUserName;
-
 
     public LiveData<String> getLoggedInUserName() {
         if(loggedInUserName == null) {
@@ -28,11 +26,6 @@ public class LoginViewModel extends ViewModel {
         else {
             loggedInUserName.setValue(name);
         }
-    }
-
-    public boolean login(String name,String password) {
-//        String tips=new String();
-//        userRepository.setStringListener(tips->RunO)
     }
 
 }

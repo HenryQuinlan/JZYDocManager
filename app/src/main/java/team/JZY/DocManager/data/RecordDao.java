@@ -23,10 +23,10 @@ public interface RecordDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Record... records);
 
-    @Query(value = "SELECT * FROM Record where  OperationType = :OperationType and Operator=:Operator order by id DESC")
+    @Query(value = "SELECT * FROM Record where  OperationType = :OperationType and Operator=:Operator ")
     List<Record>findOperation(String Operator,int OperationType);
 
-    @Query(value = "SELECT * FROM Record where  OperationType = :OperationType and Operator=:Operator and docId = :docId order by id DESC")
+    @Query(value = "SELECT * FROM Record where  OperationType = :OperationType and Operator=:Operator and docId = :docId")
     List<Record>findOperation(String Operator,int OperationType,long docId);
 
 

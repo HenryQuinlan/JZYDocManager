@@ -13,10 +13,14 @@ import team.JZY.DocManager.model.User;
 public interface UserDao {
     @Insert
     public void insert(User...users);
-    @Query("select *from User where name=:username and password=:password")
-    public User request(String username,String password);
+    @Query("select * from User where name=:username")
+    public List<User> request(String username);
+    @Query("select * from User where name=:username and password=:password")
+    public List<User> request(String username,String password);
     @Delete
     public void delete(User...users);
-    @Query("select *from User")
+    @Query("select * from User")
     public List<User> getAllUsers();
+    @Query("delete from User ")
+    public void delete();
 }

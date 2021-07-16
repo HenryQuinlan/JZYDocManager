@@ -12,9 +12,11 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -32,7 +34,7 @@ import team.JZY.DocManager.databinding.LoginFragmentBinding;
 import team.JZY.DocManager.ui.UserViewModel;
 
 public class LoginFragment extends DocManagerApplication.Fragment {
-    private UserRepository userRepository =UserRepository.getInstance();
+    private UserRepository userRepository;
 
     private LoginViewModel loginViewModel;
     private LoginFragmentBinding binding;
@@ -49,14 +51,11 @@ public class LoginFragment extends DocManagerApplication.Fragment {
         // Inflate the layout for this fragment
         binding = LoginFragmentBinding.inflate(inflater, container, false);
         binding.buttonLogin.setOnClickListener(v->onButtonLoginClicked());
-
         binding.buttonRegister.setOnClickListener(v ->onButtonRegisterClicked());
-        return binding.getRoot();
-    }
+        userRepository = UserRepository.getInstance(requireContext());
 
-    private void onButtonRegisterClicked() {
-        Intent intent=new Intent(requireActivity(),Register.class);
-        startActivity(intent);
+
+        return binding.getRoot();
     }
 
     // private void onButtonRegisterClicked() {
@@ -89,12 +88,22 @@ public class LoginFragment extends DocManagerApplication.Fragment {
     public void onButtonLoginClicked() {
         String name = binding.textName.getText().toString();
         String password = binding.textPassword.getText().toString();
-//        String tips=new String();
-//        userRepository.setStringListener(tips-> getMActivity().runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                Snackbar.make(v,tips,Snackbar.LENGTH_SHORT).show();
-//            }
-//        })).login(name,password);
+        userRepository.setStringListener(tips-> getMActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                Toast toast = Toast.makeText(requireContext(),tips,Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER,0,0);
+                toast.show();
+                if(tips.equals("登录成功")) {
+                    loginViewModel.setLoggedInUserName(name);
+                }
+            }
+        })).login(name,password);
+    }
+
+    private void onButtonRegisterClicked() {
+        Intent intent=new Intent(requireActivity(),Register.class);
+        startActivity(intent);
     }
 }
