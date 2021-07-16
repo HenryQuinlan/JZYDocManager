@@ -94,7 +94,7 @@
     </LinearLayout>
 
 
-        <!-- 全圆角-->
+    <!-- 全圆角-->
     <LinearLayout
         android:id="@+id/settings_layout"
         style="@style/wrap_layout"

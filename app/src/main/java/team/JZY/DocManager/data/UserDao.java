@@ -5,6 +5,8 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
+import java.util.List;
+
 import team.JZY.DocManager.model.User;
 
 @Dao
@@ -15,4 +17,6 @@ public interface UserDao {
     public User request(String username,String password);
     @Delete
     public void delete(User...users);
+    @Query("select *from User")
+    public List<User> getAllUsers();
 }

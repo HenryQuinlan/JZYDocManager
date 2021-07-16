@@ -5,7 +5,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 
+import team.JZY.DocManager.data.UserRepository;
+import team.JZY.DocManager.model.User;
+
 public class LoginViewModel extends ViewModel {
+    private UserRepository userRepository=UserRepository.getInstance();
 
     public static final String SAVE_LOGGED_IN_STATE_KEY = "SavedLoggedInStateKey";
     private MutableLiveData<String> loggedInUserName;
@@ -25,11 +29,10 @@ public class LoginViewModel extends ViewModel {
             loggedInUserName.setValue(name);
         }
     }
+
     public boolean login(String name,String password) {
-        if(name.equals("1") &&password.equals("1")) {
-            loggedInUserName.setValue(name);
-            return true;
-        }
-        return false;
+//        String tips=new String();
+//        userRepository.setStringListener(tips->RunO)
     }
+
 }
