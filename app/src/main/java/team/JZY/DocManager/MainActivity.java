@@ -28,6 +28,7 @@ import android.widget.PopupWindow;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.kathline.library.common.ZFileManageHelp;
 import com.kathline.library.content.ZFileBean;
 import com.kathline.library.content.ZFileConfiguration;
@@ -180,6 +181,11 @@ public class MainActivity extends DocManagerApplication.Activity {
             docInfoRepository.setInsertListener(docsId -> {
                 CosLoader cosLoader = new CosLoader(MainActivity.this);
                 cosLoader.setResultListener((upload, result) -> {
+                    if(result.equals("fail")) {
+                        runOnUiThread(()->Snackbar.make(binding.getRoot(),"上传失败",Snackbar.LENGTH_SHORT).show());
+                        docInfoRepository.delete(docsId);
+                        return;
+                    }
                     for(int i = 0; i < docsId.size() ; i++) {
                         recordRepository.insertRecord(
                                 getLoggedInUserName(),
@@ -187,8 +193,9 @@ public class MainActivity extends DocManagerApplication.Activity {
                                 docsId.get(i),
                                 docsInfo.get(i).getName(),
                                 docsInfo.get(i).getType());
+
                     }
-                    //TODO MESSAGE
+                    runOnUiThread(()->Snackbar.make(binding.getRoot(),"上传成功",Snackbar.LENGTH_SHORT).show());
                 }).upload(this, docsUri, docsId);
             }).insert(docsInfo);
 

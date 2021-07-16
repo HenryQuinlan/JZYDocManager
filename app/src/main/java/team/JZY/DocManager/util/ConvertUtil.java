@@ -1,5 +1,6 @@
 package team.JZY.DocManager.util;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.kathline.library.content.ZFileBean;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import team.JZY.DocManager.DocManagerApplication;
 import team.JZY.DocManager.model.DocInfo;
 import team.JZY.DocManager.model.Record;
 
@@ -90,5 +92,9 @@ public class ConvertUtil {
         DocInfo docInfo = new DocInfo(record.getDocName(), record.getDocType(),0,0,"");
         docInfo.setId(record.getDocID());
         return docInfo;
+    }
+
+    public static File RecordConvertToFile(DocManagerApplication.Activity activity, Record record) {
+        return new File(activity.getSavePathDir(),record.getDocName()+"."+TypeConvertToString(record.getDocType()));
     }
 }

@@ -37,7 +37,6 @@ import team.JZY.DocManager.ui.UserViewModel;
 public class WebViewFragment extends DocManagerApplication.Fragment {
 
     private WebViewFragmentBinding binding;
-    private static WebViewFragmentBinding bindingRecord;
     private UserViewModel userViewModel;
     public WebViewFragment() {
         // Required empty public constructor
@@ -50,19 +49,8 @@ public class WebViewFragment extends DocManagerApplication.Fragment {
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-       // if(bindingRecord == null) {
-            binding = WebViewFragmentBinding.inflate(inflater,container,false);
-            initWebView();
-//            bindingRecord = binding;
-//        }
-//        else {
-//            binding = bindingRecord;
-//        }
-//        ViewGroup parent = (ViewGroup)binding.getRoot().getParent();
-//        if(parent != null) {
-//            parent.removeView(binding.getRoot());
-//        }
+        binding = WebViewFragmentBinding.inflate(inflater,container,false);
+        initWebView();
         return binding.getRoot();
     }
 
@@ -74,12 +62,12 @@ public class WebViewFragment extends DocManagerApplication.Fragment {
             binding.webView.setFocusableInTouchMode(true);
             binding.webView.requestFocus();
         }
-        Log.d("FFFFFF", getActivity() == null?"ss":"dd");
         //userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     private void initWebView() {
+
 
         binding.webView.getSettings().setJavaScriptEnabled(true);
         binding.webView.getSettings().setSupportMultipleWindows(false);

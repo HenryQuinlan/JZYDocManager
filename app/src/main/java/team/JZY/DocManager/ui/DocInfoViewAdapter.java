@@ -3,10 +3,7 @@ package team.JZY.DocManager.ui;
 import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -26,12 +23,14 @@ import team.JZY.DocManager.model.DocInfo;
 import team.JZY.DocManager.model.Record;
 import team.JZY.DocManager.util.FileOpenUtil;
 
-public class DocInfoViewAdapter extends RecyclerView.Adapter<DocInfoViewAdapter.ViewHolder> {
+public class DocInfoViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private DocManagerApplication.Activity activity;
     private RecordRepository recordRepository;
     private DocInfoRepository docInfoRepository;
     private LiveData<List<DocInfo>> liveDocsInfo;
+    private static final int TYPE_EMPTY = 0;
+    private static final int TYPE_NORMAL = 1;
     private static final int[] DOC_TYPE_IMAGE_SOURCE = {
             R.drawable.ic_doctype_doc,
             R.drawable.ic_doctype_doc,
@@ -49,23 +48,14 @@ public class DocInfoViewAdapter extends RecyclerView.Adapter<DocInfoViewAdapter.
 
         private DocInfoItemBinding binding;
         boolean isFavorite;
-//        private ImageView docTypeView;
-//        private ImageButton downloadButton;
-//        private ImageButton favoriteButton;
-//        private TextView nameText;
-//        private TextView attrText;
+
         public ViewHolder(@NonNull @NotNull DocInfoItemBinding itemBinding) {
             super(itemBinding.getRoot());
             binding = itemBinding;
-//            docTypeView = (ImageView)itemView.findViewById(R.id.doc_info_type_view);
-//            downloadButton = (ImageButton)itemView.findViewById(R.id.doc_info_download_button);
-//            favoriteButton = (ImageButton)itemView.findViewById(R.id.doc_info_favorite_button);
-//            nameText = (TextView)itemView.findViewById(R.id.doc_info_name_text);
         }
     }
     public DocInfoViewAdapter(DocManagerApplication.Activity activity,LiveData<List<DocInfo>> liveDocsInfo) {
         this.activity = activity;
-        Log.d("NNNNN", activity==null?"a":"b");
         this.liveDocsInfo = liveDocsInfo;
         this.recordRepository = RecordRepository.getInstance(activity);
         this.docInfoRepository = DocInfoRepository.getInstance(activity);
@@ -74,15 +64,19 @@ public class DocInfoViewAdapter extends RecyclerView.Adapter<DocInfoViewAdapter.
     @NonNull
     @NotNull
     @Override
-
-    public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+        if(viewType == TYPE_EMPTY) {
+            return new RecyclerView.ViewHolder(LayoutInflater.from(activity).inflate(R.layout.empty_layout,parent,false)){};
+        }
         DocInfoItemBinding itemBinding = DocInfoItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new ViewHolder(itemBinding);
     }
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder recyclerViewHolder, int position) {
+        if(!(recyclerViewHolder instanceof ViewHolder))return;
+        ViewHolder holder = (ViewHolder)recyclerViewHolder;
         DocInfo docInfo = liveDocsInfo.getValue().get(position);
         holder.binding.docInfoNameText.setText(docInfo.getName());
         holder.binding.docInfoVisitsAndSizeText.setText(
@@ -107,9 +101,11 @@ public class DocInfoViewAdapter extends RecyclerView.Adapter<DocInfoViewAdapter.
             holder.isFavorite = records != null && !records.isEmpty();
             holder.binding.docInfoFavorieButton.setImageResource(DOC_FAVORITE_IMAGE_SOURCE[holder.isFavorite?1:0]);
         }).checkRecord(activity.getLoggedInUserName(),Record.TYPE_FAVORITE,docInfo.getId());
+
         holder.binding.getRoot().setOnClickListener(v -> {
             onVisitClicked(liveDocsInfo.getValue().get(holder.getAdapterPosition()));
         });
+
         holder.binding.docInfoFavorieButton.setOnClickListener( v -> {
             onFavoriteClicked(liveDocsInfo.getValue().get(holder.getAdapterPosition()),holder.isFavorite);
             holder.isFavorite = !(holder.isFavorite);
@@ -121,7 +117,16 @@ public class DocInfoViewAdapter extends RecyclerView.Adapter<DocInfoViewAdapter.
 
     @Override
     public int getItemCount() {
-        return Objects.requireNonNull(liveDocsInfo.getValue()).size();
+        int size = (Objects.requireNonNull(liveDocsInfo.getValue()).size());
+        return size <= 0 ? 1 : size;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(Objects.requireNonNull(liveDocsInfo.getValue()).size()<=0){
+            return TYPE_EMPTY;
+        }
+        return  TYPE_NORMAL;
     }
 
     private void onDownloadClicked(DocInfo docInfo) {

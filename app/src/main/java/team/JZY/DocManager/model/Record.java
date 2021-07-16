@@ -6,7 +6,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(primaryKeys = {"Operator" , "OperationType" , "DocID"})
+@Entity(primaryKeys = {"Operator", "OperationType", "DocID"})
 public class Record {
 
     @NonNull
@@ -44,7 +44,6 @@ public class Record {
         DocName = docName;
         DocType = docType;
     }
-
 
     public String getOperator() {
         return Operator;

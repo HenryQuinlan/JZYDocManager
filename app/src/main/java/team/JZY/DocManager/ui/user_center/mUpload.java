@@ -9,9 +9,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +27,18 @@ import team.JZY.DocManager.data.RecordRepository;
 import team.JZY.DocManager.databinding.ActivityMcollectionBinding;
 import team.JZY.DocManager.databinding.ActivityMuploadBinding;
 import team.JZY.DocManager.model.Record;
+import team.JZY.DocManager.util.ConvertUtil;
+import team.JZY.DocManager.util.FileOpenUtil;
+import team.JZY.DocManager.util.RecordOperateUtil;
+
+import static team.JZY.DocManager.ui.user_center.RecordAdapter.DOC_FAVORITE_IMAGE_SOURCE;
 
 public class mUpload extends DocManagerApplication.Activity {
     private RecordRepository recordRepository;
     private String username;
     private RecordViewModel recordViewModel;
     private ActivityMuploadBinding binding;
+    private RecordAdapter recordAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +53,7 @@ public class mUpload extends DocManagerApplication.Activity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         RecordAdapter recordAdapter = new RecordAdapter(this,recordViewModel.getLiveRecord());
+        recordAdapter.setLongClickListener(this::setRecordLongClickPopupMenu);
         recyclerView.setAdapter(recordAdapter);
 
         recordViewModel.getLiveRecord().observe(this,(Observer<List<Record>>) records->{
@@ -51,46 +62,6 @@ public class mUpload extends DocManagerApplication.Activity {
         getData();
         binding.refresh.setOnRefreshListener(this::getData);
 
-        recordAdapter.setOnItemClickListener(new RecordAdapter.OnItemClickListener() {
-            @Override
-            public void onItemLongClick(View view, int pos) {
-                PopupMenu popupMenu=new PopupMenu(mUpload.this,view);
-                Record record =recordViewModel.getLiveRecord().getValue().get(pos);
-                popupMenu.getMenuInflater().inflate(R.menu.update_menu,popupMenu.getMenu());
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if(item.getItemId()==R.id.open_file){
-
-                        }
-                        if(item.getItemId()==R.id.favourite) {
-                            recordRepository.insertRecord(
-                                    username,
-                                    Record.TYPE_FAVORITE,
-                                    record.getDocID(),
-                                    record.getDocName(),
-                                    record.getDocType());
-
-                        }
-                        if(item.getItemId()==R.id.download){
-                            recordRepository.insertRecord(
-                                    username,
-                                    Record.TYPE_DOWNLOAD,
-                                    record.getDocID(),
-                                    record.getDocName(),
-                                    record.getDocType());
-                        }
-                        if(item.getItemId()==R.id.delete){
-                            recordRepository.deleteRecord(record);
-                            recordAdapter.notifyItemRemoved(pos);
-                        }
-                        return false;
-                    }
-                });
-                popupMenu.show();
-            }
-        });
     }
     public void getData() {
         recordRepository.setonRecordReceivedListener(records -> {
@@ -99,5 +70,23 @@ public class mUpload extends DocManagerApplication.Activity {
                 binding.refresh.setRefreshing(false);
             });
         }).getUploadRecord(username);
+    }
+
+    private void setRecordLongClickPopupMenu(RecordAdapter.ViewHolder holder, int position , Record record) {
+        PopupMenu popupMenu=new PopupMenu(mUpload.this,holder.itemView, Gravity.END);
+        popupMenu.getMenuInflater().inflate(R.menu.update_menu,popupMenu.getMenu());
+        popupMenu.getMenu().findItem(R.id.favourite).setTitle(holder.isFavorite?"取消收藏":"添加收藏");
+        popupMenu.setOnMenuItemClickListener(item -> {
+            if(item.getItemId()==R.id.favourite) {
+                RecordOperateUtil.favorite(mUpload.this,record,holder.isFavorite);
+                holder.isFavorite = !(holder.isFavorite);
+                holder.getBinding().docInfoFavorieButton.setImageResource(DOC_FAVORITE_IMAGE_SOURCE[holder.isFavorite?1:0]);
+            }
+            else if(item.getItemId()==R.id.delete){
+                recordRepository.setOnOperationOverListener(this::getData).deleteRecord(record);
+            }
+            return false;
+        });
+        popupMenu.show();
     }
 }

@@ -4,229 +4,119 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.user_center.UserCenterFragment">
+    tools:context=".ui.user_center.UserCenterFragment"
+    android:background="#F0F3F6"
+    android:orientation="vertical"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
 
-    <!--我的下载-->
-
-    <TextView
-
-        android:id="@+id/user_name_text"
-        android:layout_width="66dp"
-        android:layout_height="27dp"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="41dp"
-        android:layout_marginBottom="90dp"
-        android:textColor="@color/blue_200"
-        app:layout_constraintBottom_toTopOf="@+id/my_upload_layout"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/user_layout"
+        style="@style/wrap_layout"
+        android:layout_width="match_parent"
+        android:layout_height="135dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/user_name_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
-        android:id="@+id/my_download_layout"
-
+        android:id="@+id/record_layout"
+        style="@style/wrap_layout"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="1dp"
-        android:background="@color/white"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/my_upload_layout">
+        app:layout_constraintTop_toBottomOf="@+id/user_layout">
+        <!-- 上圆角-->
+        <LinearLayout
+            android:id="@+id/m_upload_layout"
+            style="@style/top_layout">
 
+            <TextView
+                style="@style/usertext"
+                android:text="我的上传" />
 
-        <ImageView
-            android:id="@+id/my_download_img"
-            android:layout_width="36dp"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/my_download_img" />
+            <ImageView style="@style/img_arrow" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/my_download"
-            android:layout_width="339dp"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:gravity="center_horizontal"
-            android:text="我的下载"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="16dp" />
+        <!-- 分割线 -->
+        <View style="@style/bg_line" />
+        <!-- 无圆角-->
+        <LinearLayout
+            android:id="@+id/m_download_layout"
+            style="@style/mid_layout">
 
-        <ImageView
-            android:id="@+id/jt_right_iv1"
-            android:layout_width="36dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="7dp"
-            android:padding="8dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/arrow_forward" />
+            <TextView
+                style="@style/usertext"
+                android:text="下载记录" />
 
-    </LinearLayout>
+            <ImageView style="@style/img_arrow" />
+        </LinearLayout>
 
-    <!--我的收藏-->
-    <LinearLayout
-        android:id="@+id/my_collection_layout"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="1dp"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/my_download_layout">
+        <View style="@style/bg_line" />
+        <!-- 下圆角-->
+        <LinearLayout
+            android:id="@+id/m_record_layout"
+            style="@style/bottom_layout">
 
-        <ImageView
-            android:id="@+id/my_collection_img"
-            android:layout_width="36dp"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/my_collection_img" />
+            <TextView
+                style="@style/usertext"
+                android:text="浏览历史" />
 
-        <TextView
-            android:id="@+id/my_collection"
-            android:layout_width="339dp"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:gravity="center_horizontal"
-            android:text="我的收藏"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="16dp" />
+            <ImageView style="@style/img_arrow" />
+        </LinearLayout>
 
+        <View style="@style/bg_line" />
+        <!-- 下圆角-->
+        <LinearLayout
+            android:id="@+id/m_collection_layout"
+            style="@style/bottom_layout">
 
-        <ImageView
-            android:id="@+id/jt_right_iv2"
-            android:layout_width="36dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="7dp"
-            android:padding="8dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/arrow_forward" />
+            <TextView
+                style="@style/usertext"
+                android:text="收藏列表" />
+
+            <ImageView style="@style/img_arrow" />
+        </LinearLayout>
 
     </LinearLayout>
-    <!--浏览记录-->
-    <LinearLayout
-        android:id="@+id/my_record_layout"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="1dp"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/my_collection_layout">
-
-        <ImageView
-            android:id="@+id/my_record_img"
-            android:layout_width="36dp"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/my_record_img" />
 
 
-        <TextView
-            android:id="@+id/my_text"
-            android:layout_width="339dp"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:gravity="center_horizontal"
-            android:text="浏览记录"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="16dp" />
-
-        <ImageView
-            android:id="@+id/jt_right_iv3"
-            android:layout_width="36dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="7dp"
-            android:padding="8dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/arrow_forward" />
-
-    </LinearLayout>
-    <!--我的上传-->
-    <LinearLayout
-        android:id="@+id/my_upload_layout"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="100dp"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/user_name_text">
-
-        <ImageView
-            android:id="@+id/my_upload_layout_img"
-            android:layout_width="36dp"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/my_update_img" />
-
-        <TextView
-            android:id="@+id/my_upload"
-            android:layout_width="339dp"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:gravity="center_horizontal"
-            android:text="我的上传"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="16dp" />
-
-
-        <ImageView
-            android:id="@+id/jt_right_iv4"
-            android:layout_width="36dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="7dp"
-            android:padding="8dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/arrow_forward" />
-
-    </LinearLayout>
-    <!--    设置      -->
+        <!-- 全圆角-->
     <LinearLayout
         android:id="@+id/settings_layout"
+        style="@style/wrap_layout"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="20dp"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/my_record_layout">
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/record_layout">
 
-        <ImageView
-            android:id="@+id/settings_img"
-            android:layout_width="36dp"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/my_record_img"
-            app:srcCompat="@drawable/settings_img" />
+        <LinearLayout
+            android:id="@+id/m_settings_layout"
+            style="@style/single_layout">
 
+            <TextView
+                style="@style/usertext"
+                android:text="设置" />
 
-        <TextView
-            android:id="@+id/settings"
-            android:layout_width="339dp"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:gravity="center_horizontal"
-            android:text="设置"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="16dp" />
-
-        <ImageView
-            android:id="@+id/jt_right_iv5"
-            android:layout_width="36dp"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="7dp"
-            android:padding="8dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/arrow_forward" />
-
+            <ImageView style="@style/img_arrow" />
+        </LinearLayout>
 
     </LinearLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -62,7 +62,7 @@ public class DocManagerApplication extends Application {
         }
 
         public String getTempPathDir() {
-            return mApplication.getSavePathDir();
+            return mApplication.getTempPathDir();
         }
         
 

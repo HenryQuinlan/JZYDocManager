@@ -14,4 +14,7 @@
     <color name="mediacontroller_bg_pressed">#ff53c1bd</color>
     <color name="mediacontroller_bg">#99000000</color>
     <color name="gray">#DCDCDC</color>
+    <color name="border_clo">#ccc</color>
+    <color name="text_clo">#333</color>
+    <color name="blue">#419DE4</color>
 </resources>

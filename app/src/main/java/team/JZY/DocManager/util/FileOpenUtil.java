@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 
@@ -68,6 +69,8 @@ public class FileOpenUtil {
             cosLoader.setResultListener((download,result)->{
                 if(result.equals("success")) {
                     FileOpenUtil.open(file,docInfo.getType(),activity);
+                    Toast.makeText(activity,"下载完成",Toast.LENGTH_LONG).show();
+                    //TODO message
                 }
             }).download(activity,docInfo.getId(),savePathDir,savedFileName);
         }
@@ -104,6 +107,7 @@ public class FileOpenUtil {
         String savePathDir = activity.getSavePathDir();
         String savedFileName = docInfo.getName()+"."+ ConvertUtil.TypeConvertToString(docInfo.getType());
         File file = new File(savePathDir,savedFileName);
+
         return file.exists();
     }
 }

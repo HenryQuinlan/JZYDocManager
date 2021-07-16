@@ -45,7 +45,6 @@ public class HomepageFragment extends DocManagerApplication.Fragment {
     private DocInfoViewModel homepageViewModel;
     private UserViewModel userViewModel;
     private HomepageFragmentBinding binding;
-    private static HomepageFragmentBinding bindingRecord;
     private RecyclerView recyclerView;
     private DocInfoViewAdapter docInfoViewAdapter;
     private DocInfoRepository docInfoRepository;
@@ -61,32 +60,22 @@ public class HomepageFragment extends DocManagerApplication.Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-//        if(bindingRecord == null) {
-            binding = HomepageFragmentBinding.inflate(inflater, container, false);
-            RecyclerView recyclerView = binding.homepageRecyclerView;
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            ((AppCompatActivity) requireActivity()).setSupportActionBar(binding.homepageToolbar);
 
-            userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
-            homepageViewModel = new ViewModelProvider(this).get(DocInfoViewModel.class);
+        binding = HomepageFragmentBinding.inflate(inflater, container, false);
+        RecyclerView recyclerView = binding.homepageRecyclerView;
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(binding.homepageToolbar);
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+        homepageViewModel = new ViewModelProvider(requireActivity()).get(DocInfoViewModel.class);
 
-            docInfoViewAdapter = new DocInfoViewAdapter(getMActivity(),homepageViewModel.getLiveInfo());
-            recyclerView.setAdapter(docInfoViewAdapter);
-            homepageViewModel.getLiveInfo().observe(getViewLifecycleOwner(),(Observer<List<DocInfo>>)docsInfo->{
-                docInfoViewAdapter.notifyDataSetChanged();
-            });
-            docInfoRepository  = DocInfoRepository.getInstance(requireActivity());
-            getData();
-            binding.homepageRefresh.setOnRefreshListener(this::getData);
-//            bindingRecord = binding;
-//        }
-//        else {
-//            binding =  bindingRecord;
-//        }
-//        ViewGroup parent = (ViewGroup)(binding).getRoot().getParent();
-//        if(parent != null) {
-//            parent.removeView(binding.getRoot());
-//        }
+        docInfoViewAdapter = new DocInfoViewAdapter(getMActivity(),homepageViewModel.getLiveInfo());
+        recyclerView.setAdapter(docInfoViewAdapter);
+        homepageViewModel.getLiveInfo().observe(getViewLifecycleOwner(),(Observer<List<DocInfo>>)docsInfo->{
+            docInfoViewAdapter.notifyDataSetChanged();
+        });
+        docInfoRepository  = DocInfoRepository.getInstance(requireActivity());
+        if(homepageViewModel.getLiveInfo().getValue().isEmpty())getData();
+        binding.homepageRefresh.setOnRefreshListener(this::getData);
         return binding.getRoot();
     }
 

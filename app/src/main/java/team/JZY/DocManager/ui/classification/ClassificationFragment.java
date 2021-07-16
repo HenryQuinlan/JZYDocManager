@@ -32,7 +32,6 @@ import team.JZY.DocManager.ui.search.SearchableActivity;
 public class ClassificationFragment extends DocManagerApplication.Fragment {
 
     private ClassificationFragmentBinding binding;
-    private static ClassificationFragmentBinding bindingRecord;
     private UserViewModel userViewModel;
 
     public static ClassificationFragment newInstance() {
@@ -48,23 +47,13 @@ public class ClassificationFragment extends DocManagerApplication.Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        //if(bindingRecord == null) {
-            binding = ClassificationFragmentBinding.inflate(inflater, container, false);
-            RecyclerView recyclerView = binding.classificationRecyclerView;
-            recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-            ((AppCompatActivity) getMActivity()).setSupportActionBar(binding.homepageToolbar);
-            userViewModel = new ViewModelProvider(getMActivity()).get(UserViewModel.class);
-            ClassificationViewAdapter adapter = new ClassificationViewAdapter(requireContext());
-            recyclerView.setAdapter(adapter);
-//            bindingRecord = binding;
-//        }
-//        else {
-//            binding = bindingRecord;
-//        }
-//        ViewGroup parent = (ViewGroup)binding.getRoot().getParent();
-//        if(parent != null) {
-//            parent.removeView(binding.getRoot());
-//        }
+        binding = ClassificationFragmentBinding.inflate(inflater, container, false);
+        RecyclerView recyclerView = binding.classificationRecyclerView;
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        ((AppCompatActivity) getMActivity()).setSupportActionBar(binding.homepageToolbar);
+        userViewModel = new ViewModelProvider(getMActivity()).get(UserViewModel.class);
+        ClassificationViewAdapter adapter = new ClassificationViewAdapter(requireContext());
+        recyclerView.setAdapter(adapter);
         return binding.getRoot();
     }
 

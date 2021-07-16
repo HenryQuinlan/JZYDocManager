@@ -10,6 +10,10 @@
 
     <item
         android:id="@+id/delete"
-        android:title="删除记录" />
+        android:title="移除记录" />
+
+    <item
+        android:id="@+id/deleteFile"
+        android:title="删除文件" />
 
 </menu>

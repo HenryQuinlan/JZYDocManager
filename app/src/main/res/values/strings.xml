@@ -2,7 +2,7 @@
     <string name="app_name">JZYDocManager</string>
     <string name="navigation_title_homepage">首页</string>
     <string name="navigation_title_classification">分类</string>
-    <string name="navigation_title_local_download">本地</string>
+    <string name="navigation_title_web_view">全网</string>
     <string name="navigation_title_user_center">我的</string>
     <string name="button_login">登 录</string>
     <string name="button_register">注 册</string>

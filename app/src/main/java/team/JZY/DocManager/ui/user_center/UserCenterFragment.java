@@ -46,11 +46,11 @@ public class UserCenterFragment extends DocManagerApplication.Fragment {
         userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
 
         binding.userNameText.setText(getLoggedInUserName());
-        binding.myCollectionLayout.setOnClickListener(v ->onCollectionClicked());
-        binding.myDownloadLayout.setOnClickListener(v -> onDownloadClicked());
-        binding.myUploadLayout.setOnClickListener(v -> onUploadClicked());
-        binding.settingsLayout.setOnClickListener(v -> onSettingsClicked());
-        binding.myRecordLayout.setOnClickListener(v -> onRecordClicked());
+        binding.mCollectionLayout.setOnClickListener(v ->onCollectionClicked());
+        binding.mDownloadLayout.setOnClickListener(v -> onDownloadClicked());
+        binding.mUploadLayout.setOnClickListener(v -> onUploadClicked());
+        binding.mSettingsLayout.setOnClickListener(v -> onSettingsClicked());
+        binding.mRecordLayout.setOnClickListener(v -> onRecordClicked());
         return binding.getRoot();
         // Inflate the layout for this fragment
     }

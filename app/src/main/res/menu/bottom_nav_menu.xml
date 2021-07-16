@@ -19,8 +19,8 @@
 
     <item
         android:id="@+id/local_download_fragment"
-        android:icon="@drawable/ic_homepage"
-        android:title="@string/navigation_title_local_download" />
+        android:icon="@drawable/ic_web_view"
+        android:title="@string/navigation_title_web_view" />
 
     <item
         android:id="@+id/user_center_fragment"

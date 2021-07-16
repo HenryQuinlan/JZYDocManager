@@ -1,6 +1,7 @@
 package team.JZY.DocManager.data;
 
 import android.content.Context;
+import android.util.Log;
 
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class RecordRepository implements UserRecorder {
     private RecordDao recordDao;
     private static RecordRepository INSTANCE;
     private onRecordReceivedListener mListener;
+    private onOperateOverListener mOverListener;
     private RecordRepository() {
     }
     public static RecordRepository getInstance(Context context){
@@ -35,6 +37,11 @@ public class RecordRepository implements UserRecorder {
 
     public RecordRepository setonRecordReceivedListener(onRecordReceivedListener listener) {
         mListener = listener;
+        return this;
+    }
+
+    public RecordRepository setOnOperationOverListener(onOperateOverListener listener) {
+        mOverListener = listener;
         return this;
     }
 
@@ -83,6 +90,7 @@ public class RecordRepository implements UserRecorder {
     public List<Record> getFavoriteRecord(String UserName) {
         new Thread(()->{
             List<Record> records=recordDao.findOperation(UserName,Record.TYPE_FAVORITE);
+            Log.d("ZZZZ", mListener==null?"0":"1");
             if(mListener==null)return;
             mListener.receive(records);
             mListener=null;
@@ -105,14 +113,18 @@ public class RecordRepository implements UserRecorder {
     public void deleteRecord(Record... records) {
         new Thread(()->{
             recordDao.deleteOperation(records);
-            if(mListener==null)return;
-            mListener=null;
+            if(mOverListener == null)return;
+            mOverListener.over();
+            mOverListener = null;
         }).start();
     }
 
-
     public interface onRecordReceivedListener {
         public void receive(List<Record> records);
+    }
+
+    public interface onOperateOverListener {
+        public void over();
     }
 
 //    public LiveData<List<Record>> getAllWordsLive() {

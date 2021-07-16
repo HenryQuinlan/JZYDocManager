@@ -37,6 +37,9 @@ public interface DocInfoDao  {
     @Query("select id from docinfo order by id desc limit 1")
     public long getSize();
 
+    @Query("delete from docinfo where id = :docsId")
+    public void delete(List<Long> docsId);
+
     @Query("delete from docinfo where 1")
     public void deleteAll();
 //    @Insert(onConflict = OnConflictStrategy.REPLACE)

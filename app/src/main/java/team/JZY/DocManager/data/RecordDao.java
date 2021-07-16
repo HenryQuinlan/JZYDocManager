@@ -1,15 +1,14 @@
 package team.JZY.DocManager.data;
 
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
 import java.util.List;
 
-import team.JZY.DocManager.model.DocInfo;
 import team.JZY.DocManager.model.Record;
 
 @Dao
@@ -21,9 +20,8 @@ public interface RecordDao {
 //    public List<Record> getFavoriteRecord(String UserName);
 //    public void deleteRecord(String userName,DocInfo docInfo,int operationType);
 
-    @Insert
-    void insert(Record...records);
-
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(Record... records);
 
     @Query(value = "SELECT * FROM Record where  OperationType = :OperationType and Operator=:Operator")
     List<Record>findOperation(String Operator,int OperationType);

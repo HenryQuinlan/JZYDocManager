@@ -47,8 +47,7 @@ public class DocInfoRepository implements DocInfoProvider {
     @Override
     public List<DocInfo> request(long amount) {
         new Thread(()->{
-            long size = docInfoDao.getSize();
-            List<DocInfo> result = docInfoDao.request(amount<size?amount:size);
+            List<DocInfo> result = docInfoDao.request(amount);
             if(mRequestListener != null)mRequestListener.getResponse(result);
             mRequestListener = null;
         }).start();
@@ -58,8 +57,7 @@ public class DocInfoRepository implements DocInfoProvider {
     @Override
     public List<DocInfo> request(long amount, int classification) {
         new Thread(()->{
-            long size = docInfoDao.getSize();
-            List<DocInfo> result = docInfoDao.request(amount<size?amount:size,classification);
+            List<DocInfo> result = docInfoDao.request(amount,classification);
             if(mRequestListener != null)mRequestListener.getResponse(result);
             mRequestListener = null;
         }).start();
@@ -101,6 +99,12 @@ public class DocInfoRepository implements DocInfoProvider {
     public void update(long docId, long docVisits) {
         new Thread(()->{
             docInfoDao.update(docId,docVisits);
+        }).start();
+    }
+
+    public void delete(List<Long> docsId) {
+        new Thread(()->{
+            docInfoDao.delete(docsId);
         }).start();
     }
 
